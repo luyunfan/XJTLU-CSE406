@@ -2,26 +2,26 @@ package per.yunfan.cse406.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import javax.jms.*;
+import javax.jms.ConnectionFactory;
 
 /**
- * Message queue config static class
+ * 消息队列配置信息工具类
  */
 public final class JMSConfig {
 
     /**
-     * static class can not create instance
+     * 工具类不产生实例
      */
     private JMSConfig() {
     }
 
     /**
-     * ActiveMQ connection factory singleton object
+     * ActiveMQ connection factory 单例对象
      */
     private static volatile ActiveMQConnectionFactory activeMQConnectionFactory = null;
 
     /**
-     * @return get ActiveMQ connection factory object
+     * @return 获取 ActiveMQ connection factory 单例对象
      */
     public static ConnectionFactory getActiveMQConnectionFactory() {
         String username = "admin";

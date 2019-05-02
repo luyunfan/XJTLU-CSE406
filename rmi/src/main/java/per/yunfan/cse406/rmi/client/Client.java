@@ -11,11 +11,11 @@ import java.rmi.registry.Registry;
  */
 public class Client {
     public static void main(String[] args) throws Exception {
-        Registry registry = LocateRegistry.getRegistry("localhost", 2019);
-        Calc bind = (Calc) registry.lookup("CALC");
+        Registry registry = LocateRegistry.getRegistry("localhost", 2019); //寻找注册中心（地址，端口）
+        Calc bind = (Calc) registry.lookup("CALC");  //获取代理对象
 
 
-        System.out.println(bind.add(1, 1));
+        System.out.println(bind.add(1, 1));  //执行RPC调用
 
         System.out.println(bind.compare(1, 2));
         System.out.println(bind.compare(1, 1));
@@ -25,7 +25,7 @@ public class Client {
         Group groupB = new Group(2, 3, 4);
         Group groupC = new Group(1, 2, 3);
 
-        System.out.println(bind.equal(groupA, groupB));
+        System.out.println(bind.equal(groupA, groupB));  //测试Java Bean作为参数的调用
         System.out.println(bind.equal(groupA, groupC));
     }
 }
