@@ -28,12 +28,12 @@
 所有源码都在src/main/java/per/yunfan/cse406下
   * per.yunfan.cse406.jdbc/
     * JdbcUtils 读取JDBC配置信息并提供SQL执行辅助的工具类
-    * statement/
-      * ClassPractice
-      * ClassPractice2
-      * TestCallableStatement
-      * TestPreparedStatement
-      * TestStatement
+    * statement/ 所有JDBC的Demo和课堂练习
+      * ClassPractice 课堂练习代码
+      * ClassPractice2 课堂练习代码2
+      * TestCallableStatement JDBC调用存储过程的Demo
+      * TestPreparedStatement 使用PreparedStatement对象的Demo
+      * TestStatement 使用Statement对象的Demo
 
 ***
 
