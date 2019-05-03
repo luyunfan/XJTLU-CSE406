@@ -14,7 +14,38 @@
 
 ***
 
-### 2. Java-EE模块文件说明
+### 2. Java-EE（Servlet）模块文件说明
+资源文件：空
+
+源码：
+所有源码都在src/main/java/per/yunfan/cse406/java-ee下
+  * per.yunfan.cse406.javaee/
+    * add/
+        * AddServlet
+    * beans/
+        * User
+    * cookie/
+        * CookieReadServlet
+        * CookieServlet
+    * first/
+        * LoginServlet
+    * hello/
+        * HelloServlet
+    * session/
+        * SessionReadServlet
+        * SessionServlet
+    
+WEB文件夹：
+    * web/
+        * WEB-INF/
+            * web.xml
+        * add.html
+        * add.jsp
+        * failure.html
+        * index.jsp
+        * login.html
+        * loginSession.html
+        * success.jsp
 
 ***
 
