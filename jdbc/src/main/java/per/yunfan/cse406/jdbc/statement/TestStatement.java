@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * 使用JDBC Statement的Demo
+ */
 public class TestStatement {
 
     public static void main(String[] args) {

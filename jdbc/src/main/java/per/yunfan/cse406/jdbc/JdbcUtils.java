@@ -4,11 +4,22 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * 一个JDBC的工具类，用于获取配置文件的配置建立连接，以及提供通用的SQL执行逻辑
+ */
 public final class JdbcUtils {
 
+    /**
+     * 工具类不能实例化
+     */
     private JdbcUtils() {
     }
 
+    /**
+     * 根据配置信息获取Connection对象
+     *
+     * @return JDBC Connection对象
+     */
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -34,6 +45,15 @@ public final class JdbcUtils {
         return connection;
     }
 
+    /**
+     * 执行一个更新SQL语句
+     *
+     * @param connection JDBC Connection对象
+     * @param sql        SQL语句
+     * @param para       SQL语句中包含的"?"参数的实际值
+     * @return 更新SQL影响的行数
+     * @throws SQLException 出现SQL执行的异常
+     */
     @SuppressWarnings("Duplicates")
     public static int executeUpdate(Connection connection,
                                     String sql,
@@ -49,6 +69,15 @@ public final class JdbcUtils {
         return resCount;
     }
 
+    /**
+     * 执行一个查询SQL语句
+     *
+     * @param connection JDBC Connection对象
+     * @param sql        SQL语句
+     * @param para       SQL语句中包含的"?"参数的实际值
+     * @return 查询后得到的ResultSet对象
+     * @throws SQLException 出现SQL执行的异常
+     */
     @SuppressWarnings("Duplicates")
     public static ResultSet executeQuery(Connection connection,
                                          String sql,
@@ -62,6 +91,13 @@ public final class JdbcUtils {
         return ps.executeQuery();
     }
 
+    /**
+     * 辅助查询和更新SQL中对动态参数的插入方法
+     *
+     * @param preparedStatement 需要插入参数的PreparedStatement对象
+     * @param para              参数
+     * @throws SQLException 出现SQL执行的异常
+     */
     private static void insertParameterToPrepareStatement(
             PreparedStatement preparedStatement,
             Object... para) throws SQLException {

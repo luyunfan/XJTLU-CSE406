@@ -5,6 +5,9 @@ import per.yunfan.cse406.jdbc.JdbcUtils;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 
+/**
+ * 使用JDBC调用数据库存储过程的Demo
+ */
 public class TestCallableStatement {
 
     public static void main(String[] args) {

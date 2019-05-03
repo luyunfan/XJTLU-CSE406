@@ -22,19 +22,18 @@
 资源文件：
   * resources/create_procedure.sql ——JDBC课程中构建存储过程的SQL语句。
   * resources/test.sql ——学校服务器上"test"数据库建库的所有语句。
-  * resources/per.yunfan.cse406.jdbc.properties ——JDBC配置文件，可以配置服务器、用户名、密码。
+  * resources/jdbc.properties ——JDBC配置文件，可以配置服务器、用户名、密码。
 
 源码：
 所有源码都在src/main/java/per/yunfan/cse406下
   * per.yunfan.cse406.jdbc/
-    * JdbcUtils
+    * JdbcUtils 读取JDBC配置信息并提供SQL执行辅助的工具类
     * statement/
       * ClassPractice
       * ClassPractice2
       * TestCallableStatement
       * TestPreparedStatement
       * TestStatement
-  * jms/
 
 ***
 

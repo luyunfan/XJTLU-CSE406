@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * 使用JDBC PreparedStatement的Demo
+ */
 public class TestPreparedStatement {
 
     public static void main(String[] args) {
