@@ -4,6 +4,9 @@ import per.yunfan.cse406.jms.JMSConfig;
 
 import javax.jms.*;
 
+/**
+ * 使用JMS实现RPC调用的客户端主类
+ */
 public class Client {
     public static void main(String[] args) {
         Connection connection = null;

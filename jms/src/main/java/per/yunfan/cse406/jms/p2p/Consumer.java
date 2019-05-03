@@ -5,7 +5,7 @@ import per.yunfan.cse406.jms.JMSConfig;
 import javax.jms.*;
 
 /**
- * point to point consumer client class
+ * 点对点模型消费者客户端主类
  */
 public class Consumer {
 

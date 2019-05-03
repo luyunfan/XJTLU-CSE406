@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * 使用JMS实现RPC调用的服务端主类
+ */
 public class Server {
     public static void main(String[] args) {
         Connection connection = null;

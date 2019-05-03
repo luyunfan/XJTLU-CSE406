@@ -4,11 +4,24 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * 一个代表支付事件的Java Bean
+ */
 public class PaymentEvent implements Serializable {
+
+    /**
+     * 事务ID
+     */
     private String transId;
 
+    /**
+     * 支付名
+     */
     private String payerName;
 
+    /**
+     * 金额
+     */
     private BigDecimal amount;
 
     public String getTransId() {

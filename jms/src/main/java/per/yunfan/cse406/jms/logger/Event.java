@@ -4,11 +4,24 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * 一个代表事件的Java Bean
+ */
 public class Event implements Serializable {
+
+    /**
+     * 出现事件的客户端ID
+     */
     private final String clientId;
 
+    /**
+     * 出现事件的时间
+     */
     private final Date date;
 
+    /**
+     * 事件消息
+     */
     private final String message;
 
     public Event(String clientId, Date date, String message) {

@@ -3,9 +3,26 @@ package per.yunfan.cse406.jms.calculation;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * 一个简单的封装了计算表达式的Java Bean
+ *
+ * @param <T> 表达式参与计算的数值的类型
+ */
 public class Expression<T extends Number> implements Serializable {
+
+    /**
+     * 表达式的第一个数字
+     */
     private final T first;
+
+    /**
+     * 表达式的第二个数字
+     */
     private final T second;
+
+    /**
+     * 表达式的计算符
+     */
     private final Operator operator;
 
     public T getFirst() {

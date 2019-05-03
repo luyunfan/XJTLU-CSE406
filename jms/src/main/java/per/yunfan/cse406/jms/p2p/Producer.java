@@ -6,7 +6,7 @@ import javax.jms.*;
 import java.util.Date;
 
 /**
- * point to point producer server class
+ * 点对点模型生产者服务器主类
  */
 public class Producer {
     public static void main(String[] args) {

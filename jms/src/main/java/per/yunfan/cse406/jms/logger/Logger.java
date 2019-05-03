@@ -4,11 +4,22 @@ import per.yunfan.cse406.jms.JMSConfig;
 
 import javax.jms.*;
 
+/**
+ * 记录日志的工具类
+ */
 public final class Logger {
 
+    /**
+     * 工具类不能实例化
+     */
     private Logger() {
     }
 
+    /**
+     * 像消息队列记录事件
+     *
+     * @param message 事件对象
+     */
     public static void info(Event message) {
         Connection connection = null;
         try {

@@ -5,6 +5,9 @@ import per.yunfan.cse406.jms.JMSConfig;
 import javax.jms.*;
 import java.io.IOException;
 
+/**
+ * 使用JSM发送对象的消费者客户端主类
+ */
 public class ObjectConsumer {
     public static void main(String[] args) {
         Connection connection = null;

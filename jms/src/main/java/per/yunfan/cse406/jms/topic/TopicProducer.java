@@ -6,7 +6,7 @@ import javax.jms.*;
 import java.util.Date;
 
 /**
- * Publisher server
+ * 发布-订阅模型生产者服务器主类
  */
 public class TopicProducer {
 

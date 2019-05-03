@@ -5,6 +5,9 @@ import per.yunfan.cse406.jms.JMSConfig;
 import javax.jms.*;
 import java.math.BigDecimal;
 
+/**
+ * 使用JSM发送对象的生产者服务器主类
+ */
 public class ObjectProducer {
     public static void main(String[] args) {
         Connection connection = null;

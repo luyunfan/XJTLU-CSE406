@@ -5,6 +5,9 @@ import per.yunfan.cse406.jms.JMSConfig;
 import javax.jms.*;
 import java.io.IOException;
 
+/**
+ * 记录日志的消费者主类
+ */
 public class Server {
     public static void main(String[] args) {
         Connection connection = null;

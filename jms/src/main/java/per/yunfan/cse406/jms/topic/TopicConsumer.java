@@ -6,7 +6,7 @@ import javax.jms.*;
 import java.io.IOException;
 
 /**
- * Subscriber client
+ * 发布-订阅模型消费者客户端主类
  */
 public class TopicConsumer {
 
