@@ -13,12 +13,15 @@ import java.util.Properties;
 public final class JDBCUtil {
 
     /**
+     * Logger object by log4j2
+     */
+    private static final Logger LOG = LogManager.getLogger(JDBCUtil.class);
+
+    /**
      * Utility class can't create instance
      */
     private JDBCUtil() {
     }
-
-    private static final Logger LOG = LogManager.getLogger(JDBCUtil.class);
 
     /**
      * Get JDBC Connection object by jdbc.properties
@@ -63,7 +66,7 @@ public final class JDBCUtil {
         if (sql == null || sql.isEmpty()) {
             throw new SQLException("SQL could not be null or empty !");
         }
-        System.out.println("sql execute --> " + sql);
+        LOG.info("sql execute --> " + sql);
         PreparedStatement ps = connection.prepareStatement(sql);
         insertParameterToPrepareStatement(ps, para);
         resCount = ps.executeUpdate();
@@ -85,7 +88,7 @@ public final class JDBCUtil {
         if (sql == null || sql.isEmpty()) {
             throw new SQLException("SQL could not be null or empty !");
         }
-        System.out.println("sql execute --> " + sql);
+        LOG.info("sql execute --> " + sql);
         PreparedStatement ps = connection.prepareStatement(sql);
         insertParameterToPrepareStatement(ps, para);
         return ps.executeQuery();
