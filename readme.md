@@ -8,9 +8,10 @@
 3. jms JMS相关知识课堂Demo
 4. rmi RMI相关知识课堂Demo
 
-本工程的所有代码都在src/main下，其中：
+本工程的所有代码都在src/main下；本工程的文件中：
 * 源代码： src/main/java
 * 资源文件： src/main/resources
+* Maven依赖管理配置： pom.xml
 
 ***
 
@@ -20,32 +21,37 @@
 源码：
 所有源码都在src/main/java/per/yunfan/cse406/java-ee下
   * per.yunfan.cse406.javaee/
-    * add/
-        * AddServlet
-    * beans/
-        * User
-    * cookie/
-        * CookieReadServlet
-        * CookieServlet
-    * first/
-        * LoginServlet
-    * hello/
-        * HelloServlet
-    * session/
-        * SessionReadServlet
-        * SessionServlet
+    * add/ 包含一个加法demo的练习
+        * AddServlet 对两个浮点数相加的Demo
+    * beans/ 模块需要用到的所有Java Bean
+        * User 封装了用户信息的Java Bean类
+    * cookie/ 操作Cookie相关Demo
+        * CookieReadServlet 读取已经保存的Cookie
+        * CookieServlet 写入Cookie
+    * first/ 第一次课堂练习
+        * LoginServlet 一个简单的登录Demo
+    * hello/ Hello World程序所在包
+        * HelloServlet Hello World Servlet
+    * session/ 操作Session相关Demo
+        * SessionReadServlet 读取已经保存的Session
+        * SessionServlet 写入Session
     
 WEB文件夹：
-    * web/
-        * WEB-INF/
-            * web.xml
-        * add.html
-        * add.jsp
-        * failure.html
-        * index.jsp
-        * login.html
-        * loginSession.html
-        * success.jsp
+    * web/ Servlet项目的标准web文件夹
+        * WEB-INF/ 浏览器不能访问的WEB-INF文件夹
+            * web.xml Servlet的配置文件
+        * add.html 计算加法输入的网页
+        * add.jsp 使用jsp显示计算加法的结果
+        * failure.html 登录失败跳转的网页
+        * index.jsp 第一个jsp Demo
+        * login.html 登录Demo对应的页面
+        * loginSession.html 测试Session Servlet所使用的登录页面
+        * success.jsp 登陆Demo登录成功的jsp页面
+
+pom.xml包含的依赖：
+1. servlet 4.0.1 API
+
+本WEB项目使用tomcat 9.0.17测试通过
 
 ***
 
@@ -65,6 +71,9 @@ WEB文件夹：
       * TestCallableStatement JDBC调用存储过程的Demo
       * TestPreparedStatement 使用PreparedStatement对象的Demo
       * TestStatement 使用Statement对象的Demo
+
+pom.xml包含的依赖：
+1. MySQL connector 8.0.15
 
 ***
 
@@ -97,6 +106,8 @@ WEB文件夹：
         * TopicConsumer 发布订阅模型的消费者主类
         * TopicProducer 发布订阅模型的生产者主类
     
+pom.xml包含的依赖：
+1. ActiveMQ client 5.15.8
 
 ***
 
@@ -115,29 +126,4 @@ WEB文件夹：
      * CalcImpl Calc接口的实际实现类
      * Server RPC服务端代码主类
 
-
-
-2 列表
-无序列表
-* 项目1
-* 项目2
-* 项目3
-
-有序列表
-1. 项目1
-2. 项目2
-3. 项目3
-   * 项目1
-   * 项目2
-3 其它
-
-
-***
-代码
-`<hello world>`
-代码块高亮
-```ruby
-  def add(a, b)
-    return a + b
-  end
-  ```
+pom.xml包含的依赖：无

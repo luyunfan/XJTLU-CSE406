@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 最简单的登录Demo Servlet，写死的用户名和密码：tom 123
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 

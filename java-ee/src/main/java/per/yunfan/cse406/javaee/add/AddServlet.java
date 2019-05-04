@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * 一个计算浮点数加法的Demo，拥有get和post两种方法
+ * 两个数字的参数名分别为num1和num2
+ */
 @WebServlet("/add")
 public class AddServlet extends HttpServlet {
 
