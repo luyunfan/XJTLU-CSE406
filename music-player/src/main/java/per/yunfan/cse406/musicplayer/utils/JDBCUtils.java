@@ -1,4 +1,4 @@
-package per.yunfan.cse406.musicplayer.dao;
+package per.yunfan.cse406.musicplayer.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,17 +10,17 @@ import java.util.Properties;
 /**
  * JDBC utility class
  */
-public final class JDBCUtil {
+public final class JDBCUtils {
 
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(JDBCUtil.class);
+    private static final Logger LOG = LogManager.getLogger(JDBCUtils.class);
 
     /**
      * Utility class can't create instance
      */
-    private JDBCUtil() {
+    private JDBCUtils() {
     }
 
     /**
@@ -32,7 +32,7 @@ public final class JDBCUtil {
         Connection connection = null;
         try {
             Properties props = new Properties();
-            props.load(JDBCUtil.class.getResourceAsStream("/jdbc.properties"));
+            props.load(JDBCUtils.class.getResourceAsStream("/jdbc.properties"));
             String url = props.getProperty("jdbc.url");
             String username = props.getProperty("jdbc.username");
             String password = props.getProperty("jdbc.password");

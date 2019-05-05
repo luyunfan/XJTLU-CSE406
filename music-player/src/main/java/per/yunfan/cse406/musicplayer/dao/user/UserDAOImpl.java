@@ -2,9 +2,9 @@ package per.yunfan.cse406.musicplayer.dao.user;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import per.yunfan.cse406.musicplayer.dao.JDBCUtil;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
 import java.sql.Connection;
@@ -42,8 +42,8 @@ public enum UserDAOImpl implements UserDAO {
             return Optional.empty();
         }
         final String sql = "SELECT id, password from user WHERE username = ?";
-        Connection connection = JDBCUtil.getConnection();
-        ResultSet resultSet = JDBCUtil.executeQuery(connection, sql, userName);
+        Connection connection = JDBCUtils.getConnection();
+        ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, userName);
         resultSet.next();
         int id = resultSet.getInt("id");
         String passRight = resultSet.getString("password");
