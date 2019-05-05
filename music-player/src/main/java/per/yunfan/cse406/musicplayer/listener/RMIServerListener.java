@@ -27,9 +27,9 @@ public class RMIServerListener implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        try {
-            MusicService.instance().startServer(50071);
-            UserService.instance().startServer(50072);
+        try { //Start RMI server
+            MusicService.instance().startServer(MusicService.port());
+            UserService.instance().startServer(UserService.port());
         } catch (RemoteException e) {
             LOG.error("Could not start RMI server, startup failure!", e);
             throw new RuntimeException("Could not start RMI server, startup failure!", e);

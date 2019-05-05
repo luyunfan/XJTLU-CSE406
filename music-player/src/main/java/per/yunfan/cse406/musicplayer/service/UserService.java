@@ -23,6 +23,13 @@ public interface UserService extends Remote, RMIService<UserService> {
     }
 
     /**
+     * @return RMI server port
+     */
+    static int port() {
+        return 50072;
+    }
+
+    /**
      * get RMI client object
      *
      * @param host host

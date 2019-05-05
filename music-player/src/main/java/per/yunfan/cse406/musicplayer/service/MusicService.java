@@ -23,6 +23,13 @@ public interface MusicService extends Remote, RMIService<MusicService> {
     }
 
     /**
+     * @return RMI server port
+     */
+    static int port() {
+        return 50071;
+    }
+
+    /**
      * get RMI client object
      *
      * @param host host

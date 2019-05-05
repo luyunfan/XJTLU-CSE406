@@ -19,9 +19,12 @@ import java.rmi.RemoteException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    /**
+     * User server object
+     */
     UserService userService = UserService
             .instance()
-            .getClient("localhost", 50072);
+            .getClient("localhost", UserService.port());
 
     /**
      * Logger object by log4j2
