@@ -25,7 +25,7 @@ public interface UserService extends Remote, RMIService<UserService> {
     /**
      * @return RMI server port
      */
-    static int port() {
+    static int port() throws RemoteException {
         return 50072;
     }
 

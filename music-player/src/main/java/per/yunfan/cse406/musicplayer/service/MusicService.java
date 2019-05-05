@@ -25,7 +25,7 @@ public interface MusicService extends Remote, RMIService<MusicService> {
     /**
      * @return RMI server port
      */
-    static int port() {
+    static int port() throws RemoteException {
         return 50071;
     }
 
