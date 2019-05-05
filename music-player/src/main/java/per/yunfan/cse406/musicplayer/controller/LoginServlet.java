@@ -2,15 +2,15 @@ package per.yunfan.cse406.musicplayer.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.rmi.RemoteException;
 
 /**
  * User login servlet
@@ -18,10 +18,15 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    UserService userService = UserService.instance();
+
     /**
      * Logger object by log4j2
      */
     private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
+
+    public LoginServlet() throws RemoteException {
+    }
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -67,16 +72,14 @@ public class LoginServlet extends HttpServlet {
      * @param resp an {@link HttpServletResponse} object that
      *             contains the response the servlet sends
      *             to the client
-     * @throws IOException      if an input or output error is
-     *                          detected when the servlet handles
-     *                          the request
-     * @throws ServletException if the request for the POST
-     *                          could not be handled
      * @see ServletOutputStream
      * @see ServletResponse#setContentType
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
     }
 }
