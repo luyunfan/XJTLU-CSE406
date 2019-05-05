@@ -8,11 +8,27 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * User service interface
+ */
 public interface UserService extends Remote, RMIService<UserService> {
+
+    /**
+     * A simple IoC design, it will return the UserServiceImpl object
+     *
+     * @return object of UserService implement class
+     */
     static UserService instance() throws RemoteException {
         return UserServiceImpl.INSTANCE;
     }
 
+    /**
+     * get RMI client object
+     *
+     * @param host host
+     * @param port port
+     * @return Client proxy object
+     */
     @Override
     default UserService getClient(String host, int port) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(host, port);

@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 /**
@@ -18,14 +19,16 @@ import java.rmi.RemoteException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    UserService userService = UserService.instance();
+    UserService userService = UserService
+            .instance()
+            .getClient("localhost", 50072);
 
     /**
      * Logger object by log4j2
      */
     private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
 
-    public LoginServlet() throws RemoteException {
+    public LoginServlet() throws RemoteException, NotBoundException {
     }
 
     /**
