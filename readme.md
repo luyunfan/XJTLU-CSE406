@@ -65,6 +65,8 @@ pom.xml包含的依赖：
 所有源码都在src/main/java/per/yunfan/cse406下
   * per.yunfan.cse406.jdbc/
     * JdbcUtils 读取JDBC配置信息并提供SQL执行辅助的工具类
+    * jta/ Java Transaction API相关代码
+        * JTALab JTA在MySQL上的Demo代码
     * statement/ 所有JDBC的Demo和课堂练习
       * ClassPractice 课堂练习代码
       * ClassPractice2 课堂练习代码2
