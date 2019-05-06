@@ -2,7 +2,11 @@ package per.yunfan.cse406.musicplayer.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
+import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Optional;
 
 /**
  * User login servlet
@@ -86,6 +91,21 @@ public class LoginServlet extends HttpServlet {
         resp.setContentType("application/json;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-        //userService.login()
+        Optional<UserVO> userVO = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
+        if (userVO.isPresent()) {
+            UserVO u = userVO.get();
+            Optional<User> user = userService.login(u.getUsername(), u.getPassword());
+            if (user.isPresent()) {
+                u.setPassword(PasswordUtils.createToken(user.get().getId()));
+                u.setStates(JSONUtils.SUCCESS);
+                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(u));
+            } else {
+                u.setStates(JSONUtils.FAILURE);
+                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(u));
+            }
+        } else {
+            UserVO failure = new UserVO();
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(failure));
+        }
     }
 }
