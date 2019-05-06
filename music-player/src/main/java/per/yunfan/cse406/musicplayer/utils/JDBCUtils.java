@@ -1,30 +1,38 @@
-package per.yunfan.cse406.jdbc;
+package per.yunfan.cse406.musicplayer.utils;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
 /**
- * 一个JDBC的工具类，用于获取配置文件的配置建立连接，以及提供通用的SQL执行逻辑
+ * JDBC utility class
  */
-public final class JdbcUtils {
+public final class JDBCUtils {
 
     /**
-     * 工具类不能实例化
+     * Logger object by log4j2
      */
-    private JdbcUtils() {
+    private static final Logger LOG = LogManager.getLogger(JDBCUtils.class);
+
+    /**
+     * Utility class can't create instance
+     */
+    private JDBCUtils() {
     }
 
     /**
-     * 根据配置信息获取Connection对象
+     * Get JDBC Connection object by jdbc.properties
      *
-     * @return JDBC Connection对象
+     * @return JDBC Connection object
      */
     public static Connection getConnection() {
         Connection connection = null;
         try {
             Properties props = new Properties();
-            props.load(JdbcUtils.class.getResourceAsStream("/jdbc.properties"));
+            props.load(JDBCUtils.class.getResourceAsStream("/jdbc.properties"));
             String url = props.getProperty("jdbc.url");
             String username = props.getProperty("jdbc.username");
             String password = props.getProperty("jdbc.password");
@@ -33,28 +41,24 @@ public final class JdbcUtils {
             }
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            System.err.println("Connection SQL server failure!");
-            e.printStackTrace();
+            LOG.error("Connection SQL server failure!", e);
         } catch (IOException e) {
-            System.err.println("Load jdbc.properties file failure!");
-            e.printStackTrace();
+            LOG.error("Load jdbc.properties file failure!", e);
         } catch (ClassNotFoundException e) {
-            System.err.println("Register JDBC driver failure!");
-            e.printStackTrace();
+            LOG.error("Register JDBC driver failure!", e);
         }
         return connection;
     }
 
     /**
-     * 执行一个更新SQL语句
+     * Execute an update SQL statement
      *
-     * @param connection JDBC Connection对象
-     * @param sql        SQL语句
-     * @param para       SQL语句中包含的"?"参数的实际值
-     * @return 更新SQL影响的行数
-     * @throws SQLException 出现SQL执行的异常
+     * @param connection JDBC Connection object
+     * @param sql        SQL statement string
+     * @param para       The parameter of SQL statement
+     * @return Number of rows affected after the update
+     * @throws SQLException SQL exception
      */
-    @SuppressWarnings("Duplicates")
     public static int executeUpdate(Connection connection,
                                     String sql,
                                     Object... para) throws SQLException {
@@ -62,7 +66,7 @@ public final class JdbcUtils {
         if (sql == null || sql.isEmpty()) {
             throw new SQLException("SQL could not be null or empty !");
         }
-        System.out.println("sql execute --> " + sql);
+        LOG.info("sql execute --> " + sql);
         PreparedStatement ps = connection.prepareStatement(sql);
         insertParameterToPrepareStatement(ps, para);
         resCount = ps.executeUpdate();
@@ -70,33 +74,32 @@ public final class JdbcUtils {
     }
 
     /**
-     * 执行一个查询SQL语句
+     * Execute a query SQL statement
      *
-     * @param connection JDBC Connection对象
-     * @param sql        SQL语句
-     * @param para       SQL语句中包含的"?"参数的实际值
-     * @return 查询后得到的ResultSet对象
-     * @throws SQLException 出现SQL执行的异常
+     * @param connection JDBC Connection object
+     * @param sql        SQL statement string
+     * @param para       The parameter of SQL statement
+     * @return ResultSet object obtained after query
+     * @throws SQLException SQL exception
      */
-    @SuppressWarnings("Duplicates")
     public static ResultSet executeQuery(Connection connection,
                                          String sql,
                                          Object... para) throws SQLException {
         if (sql == null || sql.isEmpty()) {
             throw new SQLException("SQL could not be null or empty !");
         }
-        System.out.println("sql execute --> " + sql);
+        LOG.info("sql execute --> " + sql);
         PreparedStatement ps = connection.prepareStatement(sql);
         insertParameterToPrepareStatement(ps, para);
         return ps.executeQuery();
     }
 
     /**
-     * 辅助查询和更新SQL中对动态参数的插入方法
+     * Auxiliary query and update method for inserting dynamic parameters in SQL
      *
-     * @param preparedStatement 需要插入参数的PreparedStatement对象
-     * @param para              参数
-     * @throws SQLException 出现SQL执行的异常
+     * @param preparedStatement PreparedStatement object that needs to insert a parameter
+     * @param para              parameter
+     * @throws SQLException SQL exception
      */
     private static void insertParameterToPrepareStatement(
             PreparedStatement preparedStatement,

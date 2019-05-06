@@ -26,6 +26,7 @@
         <module>jdbc</module>
         <module>jms</module>
         <module>rmi</module>
+        <module>music-player</module>
     </modules>
 
 </project>
