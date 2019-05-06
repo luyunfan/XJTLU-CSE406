@@ -2,9 +2,13 @@ package per.yunfan.cse406.musicplayer.service.user;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.dao.UserDAO;
+import per.yunfan.cse406.musicplayer.model.User;
 import per.yunfan.cse406.musicplayer.service.UserService;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * User service by RPC call
@@ -20,6 +24,11 @@ public enum UserServiceImpl implements UserService {
      * Logger object by log4j2
      */
     private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
+
+    /**
+     * UserDAO object
+     */
+    private final UserDAO userDAO = UserDAO.instance();
 
     /**
      * @return Service implement object(simple IoC design)
@@ -43,5 +52,22 @@ public enum UserServiceImpl implements UserService {
     @Override
     public Logger getLogger() throws RemoteException {
         return LOG;
+    }
+
+    /**
+     * Login user method
+     *
+     * @param username Input user name
+     * @param password Input password
+     * @return if login success, return an User object
+     */
+    @Override
+    public Optional<User> login(String username, String password) {
+        try {
+            return userDAO.login(username, password);
+        } catch (SQLException e) {
+            LOG.error("Login failure in DAO object", e);
+            return Optional.empty();
+        }
     }
 }

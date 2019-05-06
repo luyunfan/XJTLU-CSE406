@@ -1,5 +1,6 @@
 package per.yunfan.cse406.musicplayer.service;
 
+import per.yunfan.cse406.musicplayer.model.User;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
 
 import java.rmi.NotBoundException;
@@ -7,6 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Optional;
 
 /**
  * User service interface
@@ -41,4 +43,13 @@ public interface UserService extends Remote, RMIService<UserService> {
         Registry registry = LocateRegistry.getRegistry(host, port);
         return (UserService) registry.lookup(this.nameOfRMI());
     }
+
+    /**
+     * Login user method
+     *
+     * @param username Input user name
+     * @param password Input password
+     * @return if login success, return an User object
+     */
+    Optional<User> login(String username, String password);
 }

@@ -83,9 +83,9 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        resp.setContentType("application/json");
+        resp.setContentType("application/json;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-
+        //userService.login()
     }
 }
