@@ -2,16 +2,34 @@ package per.yunfan.cse406.musicplayer.model.vo;
 
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
+/**
+ * User VO Java bean
+ */
 public class UserVO {
 
+    /**
+     * Singleton failure result object
+     */
     public static final UserVO FAILURE = new UserVO("", "", JSONUtils.FAILURE);
 
+    /**
+     * Username
+     */
     private String username;
 
+    /**
+     * Password or token
+     */
     private String password;
 
+    /**
+     * Successful or failure
+     */
     private String states;
 
+    /**
+     * Failure information
+     */
     private String info;
 
     public UserVO(String username, String password, String states) {

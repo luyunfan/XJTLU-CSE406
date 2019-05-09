@@ -91,7 +91,7 @@ public enum UserDAOImpl implements UserDAO {
      * @throws SQLException SQL query exception
      */
     private Optional<User> findUserByName(String username) throws SQLException {
-        final String sql = "SELECT id, password from user WHERE username = ?";
+        final String sql = "SELECT id, password FROM user WHERE username = ?;";
         Connection connection = JDBCUtils.getConnection();
         ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, username);
         resultSet.next();

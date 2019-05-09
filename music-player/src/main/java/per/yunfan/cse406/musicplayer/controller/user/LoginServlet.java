@@ -1,4 +1,4 @@
-package per.yunfan.cse406.musicplayer.controller;
+package per.yunfan.cse406.musicplayer.controller.user;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

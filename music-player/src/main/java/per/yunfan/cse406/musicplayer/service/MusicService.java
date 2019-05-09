@@ -7,6 +7,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 /**
  * Music service interface
@@ -41,4 +42,11 @@ public interface MusicService extends Remote, RMIService<MusicService> {
         Registry registry = LocateRegistry.getRegistry(host, port);
         return (MusicService) registry.lookup(this.nameOfRMI());
     }
+
+    /**
+     * Get all music from database
+     *
+     * @return All music list
+     */
+    List getAllMusic();
 }
