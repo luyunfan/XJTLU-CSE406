@@ -3,6 +3,7 @@ package per.yunfan.cse406.musicplayer.service.user;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
+import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.User;
 import per.yunfan.cse406.musicplayer.service.UserService;
 
@@ -68,6 +69,23 @@ public enum UserServiceImpl implements UserService {
         } catch (SQLException e) {
             LOG.error("Login failure in DAO object", e);
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Sign in a new user
+     *
+     * @param username username
+     * @param password password
+     * @return Sign in States
+     */
+    @Override
+    public UserStates signIn(String username, String password) {
+        try {
+            return userDAO.signIn(username, password);
+        } catch (SQLException e) {
+            LOG.error("Sign in user: " + username + " failure in DAO object", e);
+            return UserStates.UNKNOWN_ERROR;
         }
     }
 }

@@ -1,5 +1,6 @@
 package per.yunfan.cse406.musicplayer.service;
 
+import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.User;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
 
@@ -52,4 +53,13 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @return if login success, return an User object
      */
     Optional<User> login(String username, String password);
+
+    /**
+     * Sign in a new user
+     *
+     * @param username username
+     * @param password password
+     * @return Sign in States
+     */
+    UserStates signIn(String username, String password);
 }
