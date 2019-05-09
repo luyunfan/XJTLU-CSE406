@@ -82,6 +82,10 @@ public final class JSONUtils {
     }
 
     public static boolean writeJSONToResponse(HttpServletResponse resp, String jsonString) {
+        resp.setContentType("application/json;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
         try (PrintWriter out = resp.getWriter()) {
             out.write(jsonString);
             return true;

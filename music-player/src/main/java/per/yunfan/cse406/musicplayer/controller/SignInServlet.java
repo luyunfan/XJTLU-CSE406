@@ -2,28 +2,28 @@ package per.yunfan.cse406.musicplayer.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
-import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Optional;
 
 /**
- * User login servlet
+ * User sign in servlet
  */
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/signIn")
+public class SignInServlet extends HttpServlet {
 
     /**
      * User server object
@@ -35,9 +35,9 @@ public class LoginServlet extends HttpServlet {
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(LoginServlet.class);
+    private static final Logger LOG = LogManager.getLogger(SignInServlet.class);
 
-    public LoginServlet() throws RemoteException, NotBoundException {
+    public SignInServlet() throws RemoteException, NotBoundException {
     }
 
     /**
@@ -84,28 +84,39 @@ public class LoginServlet extends HttpServlet {
      * @param resp an {@link HttpServletResponse} object that
      *             contains the response the servlet sends
      *             to the client
+     * @throws IOException      if an input or output error is
+     *                          detected when the servlet handles
+     *                          the request
+     * @throws ServletException if the request for the POST
+     *                          could not be handled
      * @see ServletOutputStream
      * @see ServletResponse#setContentType
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        Optional<UserVO> loginUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Optional<UserVO> newUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
 
-        if (loginUser.isPresent()) { //Json String is right
-            UserVO tryLogin = loginUser.get();
-            Optional<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
-            if (user.isPresent()) { //Login successful
-                User successUser = user.get();
-                tryLogin.setPassword(PasswordUtils.createToken(successUser.getId()));
-                tryLogin.setStates(JSONUtils.SUCCESS);
-                //key = token, value = id_username
-                RedisUtils.set(tryLogin.getPassword(), (successUser.getId() + "_" + successUser.getUserName()));
-                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
-                LOG.info("User: " + successUser.getUserName() + " login.");
-            } else {
-                tryLogin.setStates(JSONUtils.FAILURE);
-                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+        if (newUser.isPresent()) { //Json String is right
+            UserVO user = newUser.get();
+            UserStates states = userService.signIn(user.getUsername(), user.getPassword());
+            user.setStates(JSONUtils.FAILURE); //if success, set to successful
+
+            switch (states) {
+                case SUCCESS:
+                    user.setStates(JSONUtils.SUCCESS);
+                    break;
+                case ALREADY_EXIST:
+                    user.setInfo("User: " + user.getUsername() + " has already exist.");
+                    break;
+                case USERNAME_ILLEGAL:
+                    user.setInfo("Username: " + user.getUsername() + " is illegal.");
+                    break;
+                case UNKNOWN_ERROR:
+                    user.setInfo("Server error.");
+                    break;
             }
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(user));
+
         } else {
             JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(UserVO.FAILURE));
         }
