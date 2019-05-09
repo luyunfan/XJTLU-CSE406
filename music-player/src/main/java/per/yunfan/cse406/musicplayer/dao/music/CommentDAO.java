@@ -7,7 +7,11 @@ import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +46,7 @@ public class CommentDAO {
      */
     public List<Comment> getCommentByMusic(Music music) throws SQLException {
         List<Comment> result = new ArrayList<>();
-        final String sql = "SELECT id, username, content FROM comment WHERE musicId = ?;";
+        final String sql = "SELECT id, username, content, date FROM comment WHERE musicId = ?;";
         Connection connection = JDBCUtils.getConnection();
         ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, music.getId());
 
@@ -50,7 +54,13 @@ public class CommentDAO {
             int id = resultSet.getInt("id");
             String username = resultSet.getString("username");
             String content = resultSet.getString("username");
-            result.add(new Comment(id, username, music, content));
+            Date date = resultSet.getDate("date");
+
+            Instant instant = date.toInstant();
+            ZoneId zoneId = ZoneId.systemDefault();
+            LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+
+            result.add(new Comment(id, username, music, content, localDate));
         }
         return result;
     }

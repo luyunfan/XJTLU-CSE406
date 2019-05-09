@@ -27,6 +27,8 @@ public class MusicVO {
      */
     private String states;
 
+    //private List<String> co
+
     public MusicVO(String name, String url, String states) {
         this.name = name;
         this.url = url;

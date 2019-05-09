@@ -1,5 +1,6 @@
 package per.yunfan.cse406.musicplayer.service;
 
+import per.yunfan.cse406.musicplayer.model.Music;
 import per.yunfan.cse406.musicplayer.service.music.MusicServiceImpl;
 
 import java.rmi.NotBoundException;
@@ -48,5 +49,5 @@ public interface MusicService extends Remote, RMIService<MusicService> {
      *
      * @return All music list
      */
-    List getAllMusic();
+    List<Music> getAllMusic();
 }

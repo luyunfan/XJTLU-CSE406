@@ -1,5 +1,7 @@
 package per.yunfan.cse406.musicplayer.model;
 
+import java.time.LocalDate;
+
 public class Comment {
 
     private int id;
@@ -10,11 +12,14 @@ public class Comment {
 
     private String content;
 
-    public Comment(int id, String username, Music music, String content) {
+    private LocalDate date;
+
+    public Comment(int id, String username, Music music, String content, LocalDate date) {
         this.id = id;
         this.username = username;
         this.music = music;
         this.content = content;
+        this.date = date;
     }
 
     public int getId() {
@@ -47,5 +52,13 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

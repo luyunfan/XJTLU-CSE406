@@ -1,6 +1,8 @@
 package per.yunfan.cse406.musicplayer.controller.music;
 
+import per.yunfan.cse406.musicplayer.model.Music;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
+import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
 import javax.servlet.ServletException;
@@ -11,10 +13,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Collections;
+import java.util.List;
 
 @WebServlet("/GetAllMusic")
 public class GetAllMusicServlet extends HttpServlet {
+
+    /**
+     * Music server object
+     */
+    private MusicService musicService = MusicService
+            .instance()
+            .getClient("localhost", MusicService.port());
+
+    public GetAllMusicServlet() throws RemoteException, NotBoundException {
+    }
+
     /**
      * Called by the server (via the <code>service</code> method)
      * to allow a servlet to handle a POST request.
@@ -69,6 +85,13 @@ public class GetAllMusicServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<Music> allMusic = musicService.getAllMusic();
+
+//        allMusic.stream()
+//                .map(music ->{
+//
+//                })
 
 
         JSONUtils.writeJSONToResponse(
