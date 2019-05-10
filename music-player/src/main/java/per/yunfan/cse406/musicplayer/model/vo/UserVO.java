@@ -2,10 +2,12 @@ package per.yunfan.cse406.musicplayer.model.vo;
 
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
+import java.io.Serializable;
+
 /**
  * User VO Java bean
  */
-public class UserVO {
+public class UserVO implements Serializable {
 
     /**
      * Singleton failure result object

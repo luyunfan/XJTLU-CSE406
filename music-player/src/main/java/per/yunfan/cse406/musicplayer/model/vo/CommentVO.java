@@ -1,6 +1,8 @@
 package per.yunfan.cse406.musicplayer.model.vo;
 
-public class CommentVO {
+import java.io.Serializable;
+
+public class CommentVO implements Serializable {
     private String username;
 
     private String content;

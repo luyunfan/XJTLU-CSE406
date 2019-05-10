@@ -1,8 +1,9 @@
 package per.yunfan.cse406.musicplayer.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Music {
+public class Music implements Serializable {
     private int id;
 
     private String name;

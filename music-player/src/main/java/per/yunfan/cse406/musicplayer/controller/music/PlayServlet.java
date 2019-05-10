@@ -2,6 +2,7 @@ package per.yunfan.cse406.musicplayer.controller.music;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.model.Music;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
@@ -13,16 +14,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-@WebServlet("/GetAllMusic")
-public class GetAllMusicServlet extends HttpServlet {
+@WebServlet("/play")
+public class PlayServlet extends HttpServlet {
 
     /**
      * Music server object
@@ -31,14 +33,14 @@ public class GetAllMusicServlet extends HttpServlet {
             .instance()
             .getClient("localhost", MusicService.port());
 
+    public PlayServlet() throws RemoteException, NotBoundException {
+    }
+
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(GetAllMusicServlet.class);
+    private static final Logger LOG = LogManager.getLogger(PlayServlet.class);
 
-
-    public GetAllMusicServlet() throws RemoteException, NotBoundException {
-    }
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -94,27 +96,37 @@ public class GetAllMusicServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Map<Integer, String> allMusic = musicService.getAllMusicInformation();
-
-        if (allMusic == null || allMusic.isEmpty()) {
-            JSONUtils.writeJSONToResponse(
-                    resp,
-                    JSONUtils.serializationJSON(Collections.singletonList(MusicVO.FAILURE))
-            );
-        } else {
-            List<MusicVO> result = allMusic.entrySet()
-                    .stream()
-                    .map(idAndName -> new MusicVO(
-                            idAndName.getValue(),
-                            idAndName.getKey() + "",
-                            JSONUtils.SUCCESS))
-                    .collect(Collectors.toList());
-
-            JSONUtils.writeJSONToResponse(
-                    resp,
-                    JSONUtils.serializationJSON(result)
-            );
+        resp.setContentType("audio/mp3");
+        resp.setCharacterEncoding("UTF-8");
+        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
+        if (!musicVO.isPresent()) {
+            return;
+        }
+        String playId = musicVO.get().getPlayId();
+        if (playId == null || playId.isEmpty()) {
+            return;
+        }
+        String errorPath = null;
+        try {
+            int id = Integer.parseInt(playId);
+            Optional<Music> musicInfo = musicService.getMusicById(id);
+            if (musicInfo.isPresent()) {
+                Music music = musicInfo.get();
+                errorPath = music.getPath();
+                Path musicFilePath = Paths.get(music.getPath());
+                try (FileInputStream inputStream = new FileInputStream(musicFilePath.toFile());
+                     OutputStream outputStream = resp.getOutputStream()) {
+                    byte[] buffer = new byte[2048];
+                    int i;
+                    while ((i = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, i);
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            LOG.warn("User input music id: " + playId + " is not a number! ", e);
+        } catch (IOException e) {
+            LOG.error("System could not load music file: " + errorPath, e);
         }
     }
 }

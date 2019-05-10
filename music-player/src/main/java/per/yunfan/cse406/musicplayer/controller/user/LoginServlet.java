@@ -90,23 +90,27 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Optional<UserVO> loginUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
-
-        if (loginUser.isPresent()) { //Json String is right
-            UserVO tryLogin = loginUser.get();
-            Optional<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
-            if (user.isPresent()) { //Login successful
-                User successUser = user.get();
-                tryLogin.setPassword(PasswordUtils.createToken(successUser.getId()));
-                tryLogin.setStates(JSONUtils.SUCCESS);
-                //key = token, value = id_username
-                RedisUtils.set(tryLogin.getPassword(), (successUser.getId() + "_" + successUser.getUserName()));
-                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
-                LOG.info("User: " + successUser.getUserName() + " login.");
+        try {
+            if (loginUser.isPresent()) { //Json String is right
+                UserVO tryLogin = loginUser.get();
+                Optional<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
+                if (user.isPresent()) { //Login successful
+                    User successUser = user.get();
+                    tryLogin.setPassword(PasswordUtils.createToken(successUser.getId()));
+                    tryLogin.setStates(JSONUtils.SUCCESS);
+                    //key = token, value = id_username
+                    RedisUtils.set(tryLogin.getPassword(), (successUser.getId() + "_" + successUser.getUserName()));
+                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+                    LOG.info("User: " + successUser.getUserName() + " login.");
+                } else {
+                    tryLogin.setStates(JSONUtils.FAILURE);
+                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+                }
             } else {
-                tryLogin.setStates(JSONUtils.FAILURE);
-                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(UserVO.FAILURE));
             }
-        } else {
+        } catch (RemoteException e) {
+            LOG.error("Could not connect to User RMI service! ", e);
             JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(UserVO.FAILURE));
         }
     }

@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Music service by RPC call
@@ -61,12 +63,43 @@ public enum MusicServiceImpl implements MusicService {
      * @return All music list
      */
     @Override
-    public List<Music> getAllMusic() {
+    public List<Music> getAllMusic() throws RemoteException {
         try {
             return musicDAO.getAllMusic();
         } catch (SQLException e) {
             LOG.error("Get All music failure! ", e);
             return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Get all music basically information from database
+     *
+     * @return (Music id, Music name)
+     */
+    @Override
+    public Map<Integer, String> getAllMusicInformation() throws RemoteException {
+        try {
+            return musicDAO.getAllMusicInformation();
+        } catch (SQLException e) {
+            LOG.error("Get All music information failure! ", e);
+            return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * Get a music information by music play id
+     *
+     * @param id Music id
+     * @return Music object
+     */
+    @Override
+    public Optional<Music> getMusicById(int id) throws RemoteException {
+        try {
+            return musicDAO.getMusicById(id);
+        } catch (SQLException e) {
+            LOG.error("Get music by id failure! ", e);
+            return Optional.empty();
         }
     }
 }

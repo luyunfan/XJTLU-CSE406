@@ -2,6 +2,8 @@ package per.yunfan.cse406.musicplayer.controller.music;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
@@ -16,13 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@WebServlet("/GetAllMusic")
-public class GetAllMusicServlet extends HttpServlet {
+@WebServlet("/GetCommentsById")
+public class GetMusicCommentsServlet extends HttpServlet {
 
     /**
      * Music server object
@@ -34,11 +37,17 @@ public class GetAllMusicServlet extends HttpServlet {
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(GetAllMusicServlet.class);
+    private static final Logger LOG = LogManager.getLogger(GetMusicCommentsServlet.class);
 
 
-    public GetAllMusicServlet() throws RemoteException, NotBoundException {
+    public GetMusicCommentsServlet() throws RemoteException, NotBoundException {
     }
+
+    /**
+     * LocalDateTime formatter
+     */
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -94,27 +103,52 @@ public class GetAllMusicServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Map<Integer, String> allMusic = musicService.getAllMusicInformation();
-
-        if (allMusic == null || allMusic.isEmpty()) {
-            JSONUtils.writeJSONToResponse(
-                    resp,
-                    JSONUtils.serializationJSON(Collections.singletonList(MusicVO.FAILURE))
-            );
-        } else {
-            List<MusicVO> result = allMusic.entrySet()
+        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
+        if (!musicVO.isPresent()) {
+            responseFailure(resp);
+            return;
+        }
+        String playId = musicVO.get().getPlayId();
+        if (playId == null || playId.isEmpty()) {
+            responseFailure(resp);
+            return;
+        }
+        try {
+            int id = Integer.parseInt(playId);
+            Optional<Music> music = musicService.getMusicById(id);
+            if (!music.isPresent()) {
+                responseFailure(resp);
+                return;
+            }
+            List<CommentVO> result = music.get()
+                    .getComments()
                     .stream()
-                    .map(idAndName -> new MusicVO(
-                            idAndName.getValue(),
-                            idAndName.getKey() + "",
-                            JSONUtils.SUCCESS))
+                    .map(comment -> new CommentVO(
+                            comment.getUsername(),
+                            comment.getContent(),
+                            FORMATTER.format(comment.getDate())))
                     .collect(Collectors.toList());
 
             JSONUtils.writeJSONToResponse(
                     resp,
                     JSONUtils.serializationJSON(result)
             );
+        } catch (NumberFormatException e) {
+            LOG.warn("User input music id: " + playId + " is not a number! ", e);
+            responseFailure(resp);
         }
+
+    }
+
+    /**
+     * Write an empty list result to response
+     *
+     * @param resp Response object
+     */
+    private void responseFailure(HttpServletResponse resp) {
+        JSONUtils.writeJSONToResponse(
+                resp,
+                JSONUtils.serializationJSON(Collections.emptyList())
+        );
     }
 }

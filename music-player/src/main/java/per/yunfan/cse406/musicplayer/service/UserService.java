@@ -52,7 +52,7 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @param password Input password
      * @return if login success, return an User object
      */
-    Optional<User> login(String username, String password);
+    Optional<User> login(String username, String password) throws RemoteException;
 
     /**
      * Sign in a new user
@@ -61,5 +61,5 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @param password password
      * @return Sign in States
      */
-    UserStates signIn(String username, String password);
+    UserStates signIn(String username, String password) throws RemoteException;
 }
