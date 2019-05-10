@@ -1,7 +1,7 @@
 package per.yunfan.cse406.musicplayer.service;
 
 import per.yunfan.cse406.musicplayer.enums.UserStates;
-import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
 
 import java.rmi.NotBoundException;

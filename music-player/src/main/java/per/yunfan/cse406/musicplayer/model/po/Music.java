@@ -1,4 +1,4 @@
-package per.yunfan.cse406.musicplayer.model;
+package per.yunfan.cse406.musicplayer.model.po;
 
 import java.io.Serializable;
 import java.util.List;

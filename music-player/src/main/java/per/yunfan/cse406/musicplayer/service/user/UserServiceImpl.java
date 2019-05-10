@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
-import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.service.UserService;
 
 import java.rmi.RemoteException;

@@ -1,7 +1,7 @@
 package per.yunfan.cse406.musicplayer.dao;
 
 import per.yunfan.cse406.musicplayer.dao.music.MusicDAOImpl;
-import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.model.po.Music;
 
 import java.sql.SQLException;
 import java.util.List;

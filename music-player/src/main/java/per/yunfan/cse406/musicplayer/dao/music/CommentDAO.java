@@ -1,7 +1,7 @@
 package per.yunfan.cse406.musicplayer.dao.music;
 
-import per.yunfan.cse406.musicplayer.model.Comment;
-import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
+import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 
 import java.sql.Connection;
