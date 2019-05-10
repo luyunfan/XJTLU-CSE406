@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +58,7 @@ public class CommentDAO {
 
             Instant instant = date.toInstant();
             ZoneId zoneId = ZoneId.systemDefault();
-            LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+            LocalDateTime localDate = instant.atZone(zoneId).toLocalDateTime();
 
             result.add(new Comment(id, username, music, content, localDate));
         }
