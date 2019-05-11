@@ -37,6 +37,16 @@ public final class JSONUtils {
     public static String SUCCESS = "success";
 
     /**
+     * Failure JSON String
+     */
+    public static String FAILURE_JSON = "{\"states\": \"" + FAILURE + "\"' }";
+
+    /**
+     * Success JSON String
+     */
+    public static String SUCCESS_JSON = "{\"states\": \"" + SUCCESS + "\"' }";
+
+    /**
      * Utility class can't create instance
      */
     private JSONUtils() {
@@ -83,7 +93,6 @@ public final class JSONUtils {
 
     public static boolean writeJSONToResponse(HttpServletResponse resp, String jsonString) {
         resp.setContentType("application/json;charset=utf-8");
-        resp.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = resp.getWriter()) {

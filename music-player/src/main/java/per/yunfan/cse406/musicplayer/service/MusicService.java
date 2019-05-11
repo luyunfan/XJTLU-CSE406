@@ -1,6 +1,7 @@
 package per.yunfan.cse406.musicplayer.service;
 
-import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
+import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.music.MusicServiceImpl;
 
 import java.rmi.NotBoundException;
@@ -9,6 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Music service interface
@@ -49,5 +52,28 @@ public interface MusicService extends Remote, RMIService<MusicService> {
      *
      * @return All music list
      */
-    List<Music> getAllMusic();
+    List<Music> getAllMusic() throws RemoteException;
+
+    /**
+     * Get all music basically information from database
+     *
+     * @return (Music id, Music name)
+     */
+    Map<Integer, String> getAllMusicInformation() throws RemoteException;
+
+    /**
+     * Get a music information by music play id
+     *
+     * @param id Music id
+     * @return Music object
+     */
+    Optional<Music> getMusicById(int id) throws RemoteException;
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @return Is successful
+     */
+    boolean createComment(Comment comment) throws RemoteException;
 }

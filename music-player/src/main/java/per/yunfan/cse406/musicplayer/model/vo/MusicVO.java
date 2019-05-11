@@ -2,10 +2,12 @@ package per.yunfan.cse406.musicplayer.model.vo;
 
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
+import java.io.Serializable;
+
 /**
  * Music VO Java bean
  */
-public class MusicVO {
+public class MusicVO implements Serializable {
 
     /**
      * Singleton failure result object
@@ -20,18 +22,17 @@ public class MusicVO {
     /**
      * Play URL
      */
-    private String url;
+    private String playId;
 
     /**
      * Successful or failure
      */
     private String states;
 
-    //private List<String> co
 
-    public MusicVO(String name, String url, String states) {
+    public MusicVO(String name, String playId, String states) {
         this.name = name;
-        this.url = url;
+        this.playId = playId;
         this.states = states;
     }
 
@@ -46,12 +47,12 @@ public class MusicVO {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPlayId() {
+        return playId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPlayId(String playId) {
+        this.playId = playId;
     }
 
     public String getStates() {

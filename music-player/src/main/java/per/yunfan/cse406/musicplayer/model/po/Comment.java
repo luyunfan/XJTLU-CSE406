@@ -1,8 +1,9 @@
-package per.yunfan.cse406.musicplayer.model;
+package per.yunfan.cse406.musicplayer.model.po;
 
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class Comment {
+public class Comment implements Serializable {
 
     private int id;
 
@@ -12,9 +13,9 @@ public class Comment {
 
     private String content;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
-    public Comment(int id, String username, Music music, String content, LocalDate date) {
+    public Comment(int id, String username, Music music, String content, LocalDateTime date) {
         this.id = id;
         this.username = username;
         this.music = music;
@@ -54,11 +55,11 @@ public class Comment {
         this.content = content;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

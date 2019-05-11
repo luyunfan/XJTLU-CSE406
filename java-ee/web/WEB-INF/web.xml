@@ -11,6 +11,6 @@
 
     <servlet-mapping>
         <servlet-name>hello</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <playId-pattern>/hello</playId-pattern>
     </servlet-mapping>
 </web-app>

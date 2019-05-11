@@ -3,13 +3,17 @@ package per.yunfan.cse406.musicplayer.service.music;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.MusicDAO;
-import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.dao.music.CommentDAO;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
+import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Music service by RPC call
@@ -61,12 +65,61 @@ public enum MusicServiceImpl implements MusicService {
      * @return All music list
      */
     @Override
-    public List<Music> getAllMusic() {
+    public List<Music> getAllMusic() throws RemoteException {
         try {
             return musicDAO.getAllMusic();
         } catch (SQLException e) {
             LOG.error("Get All music failure! ", e);
             return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Get all music basically information from database
+     *
+     * @return (Music id, Music name)
+     */
+    @Override
+    public Map<Integer, String> getAllMusicInformation() throws RemoteException {
+        try {
+            return musicDAO.getAllMusicInformation();
+        } catch (SQLException e) {
+            LOG.error("Get All music information failure! ", e);
+            return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * Get a music information by music play id
+     *
+     * @param id Music id
+     * @return Music object
+     */
+    @Override
+    public Optional<Music> getMusicById(int id) throws RemoteException {
+        try {
+            return musicDAO.getMusicById(id);
+        } catch (SQLException e) {
+            LOG.error("Get music by id failure! ", e);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @return Is successful
+     */
+    @Override
+    public boolean createComment(Comment comment) throws RemoteException {
+        try {
+            CommentDAO.getInstance()
+                    .createComment(comment);
+            return true;
+        } catch (SQLException e) {
+            LOG.error("Create comment failure! ", e);
+            return false;
         }
     }
 }

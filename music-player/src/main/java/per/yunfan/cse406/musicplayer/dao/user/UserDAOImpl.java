@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
-import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
@@ -58,7 +58,7 @@ public enum UserDAOImpl implements UserDAO {
      * @param userName username
      * @param password password
      * @return Sign in States
-     * @throws SQLException SQL query exception
+     * @throws SQLException SQL update exception
      */
     @Override
     public UserStates signIn(String userName, String password) throws SQLException {

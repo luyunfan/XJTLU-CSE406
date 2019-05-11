@@ -1,15 +1,16 @@
 package per.yunfan.cse406.musicplayer.dao.music;
 
-import per.yunfan.cse406.musicplayer.model.Comment;
-import per.yunfan.cse406.musicplayer.model.Music;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
+import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,10 +59,26 @@ public class CommentDAO {
 
             Instant instant = date.toInstant();
             ZoneId zoneId = ZoneId.systemDefault();
-            LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+            LocalDateTime localDate = instant.atZone(zoneId).toLocalDateTime();
 
             result.add(new Comment(id, username, music, content, localDate));
         }
         return result;
+    }
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @throws SQLException SQL update exception
+     */
+    public void createComment(Comment comment) throws SQLException {
+        final String sql = "INSERT INTO comment(username, musicId, content, date) VALUES(?, ?, ?, ?);";
+        String username = comment.getUsername();
+        int musicId = comment.getMusic().getId();
+        String content = comment.getContent();
+        Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.executeUpdate(connection, sql, username, musicId, content, date);
     }
 }

@@ -2,7 +2,7 @@ package per.yunfan.cse406.musicplayer.dao;
 
 import per.yunfan.cse406.musicplayer.dao.user.UserDAOImpl;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
-import per.yunfan.cse406.musicplayer.model.User;
+import per.yunfan.cse406.musicplayer.model.po.User;
 
 import java.sql.SQLException;
 import java.util.Optional;
