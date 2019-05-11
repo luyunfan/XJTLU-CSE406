@@ -1,8 +1,9 @@
-package per.yunfan.cse406.musicplayer.model.vo;
+package per.yunfan.cse406.musicplayer.test.model.vo;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
+import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
 import java.io.IOException;
