@@ -89,4 +89,15 @@ public final class RedisUtils {
         }
     }
 
+    /**
+     * Delete value from redis by key
+     *
+     * @param key Key
+     */
+    public static <K> void delete(K key) {
+        Jedis jedis = JEDIS.getResource();
+        jedis.del(String.valueOf(key));
+        jedis.close();
+    }
+
 }
