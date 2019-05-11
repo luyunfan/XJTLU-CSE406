@@ -29,7 +29,6 @@ public class MusicVO implements Serializable {
      */
     private String states;
 
-    //private List<String> co
 
     public MusicVO(String name, String playId, String states) {
         this.name = name;

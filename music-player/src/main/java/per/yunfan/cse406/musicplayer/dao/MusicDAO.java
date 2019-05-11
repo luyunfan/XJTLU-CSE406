@@ -1,6 +1,7 @@
 package per.yunfan.cse406.musicplayer.dao;
 
 import per.yunfan.cse406.musicplayer.dao.music.MusicDAOImpl;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 
 import java.sql.SQLException;
@@ -43,4 +44,12 @@ public interface MusicDAO {
      * @throws SQLException SQL query exception
      */
     Optional<Music> getMusicById(int id) throws SQLException;
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @throws SQLException SQL update exception
+     */
+    void createComment(Comment comment) throws SQLException;
 }

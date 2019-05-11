@@ -1,5 +1,6 @@
 package per.yunfan.cse406.musicplayer.service;
 
+import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.music.MusicServiceImpl;
 
@@ -67,4 +68,12 @@ public interface MusicService extends Remote, RMIService<MusicService> {
      * @return Music object
      */
     Optional<Music> getMusicById(int id) throws RemoteException;
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @return Is successful
+     */
+    boolean createComment(Comment comment) throws RemoteException;
 }

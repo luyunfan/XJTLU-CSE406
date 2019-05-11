@@ -3,6 +3,8 @@ package per.yunfan.cse406.musicplayer.service.music;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.MusicDAO;
+import per.yunfan.cse406.musicplayer.dao.music.CommentDAO;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 
@@ -100,6 +102,24 @@ public enum MusicServiceImpl implements MusicService {
         } catch (SQLException e) {
             LOG.error("Get music by id failure! ", e);
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @return Is successful
+     */
+    @Override
+    public boolean createComment(Comment comment) throws RemoteException {
+        try {
+            CommentDAO.getInstance()
+                    .createComment(comment);
+            return true;
+        } catch (SQLException e) {
+            LOG.error("Create comment failure! ", e);
+            return false;
         }
     }
 }

@@ -2,11 +2,12 @@ package per.yunfan.cse406.musicplayer.controller.music;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
-import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -18,14 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@WebServlet("/GetCommentsById")
-public class GetMusicCommentsServlet extends HttpServlet {
+@WebServlet("/AddComment")
+public class AddCommentServlet extends HttpServlet {
 
     /**
      * Music server object
@@ -37,17 +35,11 @@ public class GetMusicCommentsServlet extends HttpServlet {
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(GetMusicCommentsServlet.class);
+    private static final Logger LOG = LogManager.getLogger(AddCommentServlet.class);
 
 
-    public GetMusicCommentsServlet() throws RemoteException, NotBoundException {
+    public AddCommentServlet() throws RemoteException, NotBoundException {
     }
-
-    /**
-     * LocalDateTime formatter
-     */
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -103,54 +95,31 @@ public class GetMusicCommentsServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
-        if (!musicVO.isPresent()) {
-            responseFailure(resp);
+        Optional<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
+        if (!commentVO.isPresent()) {
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
             return;
         }
-        String playId = musicVO.get().getPlayId();
-        if (playId == null || playId.isEmpty()) {
-            responseFailure(resp);
+        CommentVO comment = commentVO.get();
+        Optional<String> idAndUserName = RedisUtils.get(comment.getToken());
+        if (!idAndUserName.isPresent()) {
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
             return;
         }
         try {
-            int id = Integer.parseInt(playId);
-            Optional<Music> music = musicService.getMusicById(id);
-            if (!music.isPresent()) {
-                responseFailure(resp);
-                return;
+            String[] idAndUser = idAndUserName.get().split("_");
+            String username = idAndUser[1];
+
+            Music musicWithId = new Music(comment.getMusicId(), null, null);
+            Comment savingComment = new Comment(0, username, musicWithId, comment.getContent(), LocalDateTime.now());
+            if (musicService.createComment(savingComment)) {
+                JSONUtils.writeJSONToResponse(resp, JSONUtils.SUCCESS_JSON);
+            } else {
+                JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
             }
-            List<CommentVO> result = music.get()
-                    .getComments()
-                    .stream()
-                    .map(comment -> new CommentVO(
-                            comment.getUsername(),
-                            comment.getContent(),
-                            FORMATTER.format(comment.getDate()),
-                            music.get().getId(),
-                            null)
-                    ).collect(Collectors.toList());
-
-            JSONUtils.writeJSONToResponse(
-                    resp,
-                    JSONUtils.serializationJSON(result)
-            );
-        } catch (NumberFormatException e) {
-            LOG.warn("User input music id: " + playId + " is not a number! ", e);
-            responseFailure(resp);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOG.error("The format of received token from Redis is not correct. token: " + idAndUserName, e);
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
         }
-
-    }
-
-    /**
-     * Write an empty list result to response
-     *
-     * @param resp Response object
-     */
-    private void responseFailure(HttpServletResponse resp) {
-        JSONUtils.writeJSONToResponse(
-                resp,
-                JSONUtils.serializationJSON(Collections.emptyList())
-        );
     }
 }

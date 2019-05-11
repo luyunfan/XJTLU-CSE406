@@ -3,6 +3,7 @@ package per.yunfan.cse406.musicplayer.dao.music;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.MusicDAO;
+import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 
@@ -95,6 +96,18 @@ public enum MusicDAOImpl implements MusicDAO {
             return Optional.of(result);
         }
         return Optional.empty();
+    }
+
+    /**
+     * Create a new comment
+     *
+     * @param comment Comment object
+     * @throws SQLException SQL update exception
+     */
+    @Override
+    public void createComment(Comment comment) throws SQLException {
+        CommentDAO.getInstance()
+                .createComment(comment);
     }
 
 }

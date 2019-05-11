@@ -58,7 +58,7 @@ public enum UserDAOImpl implements UserDAO {
      * @param userName username
      * @param password password
      * @return Sign in States
-     * @throws SQLException SQL query exception
+     * @throws SQLException SQL update exception
      */
     @Override
     public UserStates signIn(String userName, String password) throws SQLException {
