@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 
 import java.rmi.RemoteException;
@@ -106,6 +107,22 @@ public enum UserServiceImpl implements UserService {
         } catch (SQLException e) {
             LOG.error("Modify User: " + username + "'s information failure in DAO object", e);
             return false;
+        }
+    }
+
+    /**
+     * Get user information by username
+     *
+     * @param userName Username
+     * @return User's information if this user is exist
+     */
+    @Override
+    public Optional<UserInfoVO> getUserInfoByName(String userName) throws RemoteException {
+        try {
+            return userDAO.getUserInfoByName(userName);
+        } catch (SQLException e) {
+            LOG.error("Finding user: " + userName + " failure!", e);
+            return Optional.empty();
         }
     }
 }

@@ -25,7 +25,7 @@ import java.util.Optional;
 /**
  * Modify user's information
  */
-@WebServlet("/modifyUser")
+@WebServlet("/ModifyUser")
 public class ModifyUserInfoServlet extends HttpServlet {
 
     /**

@@ -2,6 +2,7 @@ package per.yunfan.cse406.musicplayer.service;
 
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
 
 import java.rmi.NotBoundException;
@@ -74,4 +75,12 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @return Is successful
      */
     boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws RemoteException;
+
+    /**
+     * Get user information by username
+     *
+     * @param userName Username
+     * @return User's information if this user is exist
+     */
+    Optional<UserInfoVO> getUserInfoByName(String userName) throws RemoteException;
 }

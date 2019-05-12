@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * User sign in servlet
  */
-@WebServlet("/signIn")
+@WebServlet("/SignIn")
 public class SignInServlet extends HttpServlet {
 
     /**

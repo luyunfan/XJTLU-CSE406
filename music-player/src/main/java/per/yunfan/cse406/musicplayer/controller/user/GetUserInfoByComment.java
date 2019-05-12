@@ -1,11 +1,10 @@
-package per.yunfan.cse406.musicplayer.controller.music;
+package per.yunfan.cse406.musicplayer.controller.user;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import per.yunfan.cse406.musicplayer.model.po.Music;
-import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
-import per.yunfan.cse406.musicplayer.service.MusicService;
+import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
+import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -14,33 +13,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Optional;
 
-@WebServlet("/Play")
-public class PlayServlet extends HttpServlet {
+@WebServlet("/GetUserByComment")
+public class GetUserInfoByComment extends HttpServlet {
 
     /**
-     * Music server object
+     * User server object
      */
-    private MusicService musicService = MusicService
+    private UserService userService = UserService
             .instance()
-            .getClient("localhost", MusicService.port());
+            .getClient("localhost", UserService.port());
 
-    public PlayServlet() throws RemoteException, NotBoundException {
+    public GetUserInfoByComment() throws RemoteException, NotBoundException {
     }
-
-    /**
-     * Logger object by log4j2
-     */
-    private static final Logger LOG = LogManager.getLogger(PlayServlet.class);
-
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -96,37 +85,42 @@ public class PlayServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("audio/mp3");
-        resp.setCharacterEncoding("UTF-8");
-        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
-        if (!musicVO.isPresent()) {
-            return;
-        }
-        String playId = musicVO.get().getPlayId();
-        if (playId == null || playId.isEmpty()) {
-            return;
-        }
-        String errorPath = null;
-        try {
-            int id = Integer.parseInt(playId);
-            Optional<Music> musicInfo = musicService.getMusicById(id);
-            if (musicInfo.isPresent()) {
-                Music music = musicInfo.get();
-                errorPath = music.getPath();
-                Path musicFilePath = Paths.get(music.getPath());
-                try (FileInputStream inputStream = new FileInputStream(musicFilePath.toFile());
-                     OutputStream outputStream = resp.getOutputStream()) {
-                    byte[] buffer = new byte[2048];
-                    int i;
-                    while ((i = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, i);
-                    }
-                }
+        Optional<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
+        if (commentVO.isPresent()) {
+            CommentVO comment = commentVO.get();
+
+            Optional<String> idAndUserName = RedisUtils.get(comment.getToken());
+            if (!idAndUserName.isPresent()) {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("You are not login, illegal operator! ")
+                        )
+                );
+                return;
             }
-        } catch (NumberFormatException e) {
-            LOG.warn("User input music id: " + playId + " is not a number! ", e);
-        } catch (IOException e) {
-            LOG.error("System could not load music file: " + errorPath, e);
+            String username = comment.getUsername();
+            Optional<UserInfoVO> result = userService.getUserInfoByName(username);
+            if (result.isPresent()) {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(result.get())
+                );
+            } else {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("User is not exists.")
+                        )
+                );
+            }
+        } else {
+            JSONUtils.writeJSONToResponse(
+                    resp,
+                    JSONUtils.serializationJSON(
+                            UserInfoVO.FAILURE.setErrorInfo("User information JSON format is incorrect! ")
+                    )
+            );
         }
     }
 }
