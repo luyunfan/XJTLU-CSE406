@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -62,4 +63,15 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @return Sign in States
      */
     UserStates signIn(String username, String password) throws RemoteException;
+
+    /**
+     * Modify the user's information
+     *
+     * @param username     Username
+     * @param gender       User's gender
+     * @param birthday     User's Birthday
+     * @param introduction User's introduction
+     * @return Is successful
+     */
+    boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws RemoteException;
 }

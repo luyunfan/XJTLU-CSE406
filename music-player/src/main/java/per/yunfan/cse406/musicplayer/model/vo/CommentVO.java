@@ -1,8 +1,8 @@
 package per.yunfan.cse406.musicplayer.model.vo;
 
-import java.io.Serializable;
+import per.yunfan.cse406.musicplayer.model.vo.traits.WithToken;
 
-public class CommentVO extends WithToken implements Serializable {
+public class CommentVO implements WithToken<CommentVO> {
     private String username;
 
     private String content;
@@ -11,15 +11,17 @@ public class CommentVO extends WithToken implements Serializable {
 
     private int musicId;
 
+    private String token;
+
     public CommentVO(String username, String content, String date, int musicId, String token) {
-        super(token);
+        this.token = token;
         this.username = username;
         this.content = content;
         this.date = date;
         this.musicId = musicId;
     }
 
-    public CommentVO(){
+    public CommentVO() {
         super();
     }
 
@@ -64,5 +66,16 @@ public class CommentVO extends WithToken implements Serializable {
                 ", musicId=" + musicId +
                 ", token='" + token + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getToken() {
+        return this.token;
+    }
+
+    @Override
+    public CommentVO setToken(String token) {
+        this.token = token;
+        return this;
     }
 }

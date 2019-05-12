@@ -9,6 +9,7 @@ import per.yunfan.cse406.musicplayer.service.UserService;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -86,6 +87,25 @@ public enum UserServiceImpl implements UserService {
         } catch (SQLException e) {
             LOG.error("Sign in user: " + username + " failure in DAO object", e);
             return UserStates.UNKNOWN_ERROR;
+        }
+    }
+
+    /**
+     * Modify the user's information
+     *
+     * @param username     Username
+     * @param gender       User's gender
+     * @param birthday     User's Birthday
+     * @param introduction User's introduction
+     * @return Is successful
+     */
+    @Override
+    public boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws RemoteException {
+        try {
+            return userDAO.modifyUserInfo(username, gender, birthday, introduction);
+        } catch (SQLException e) {
+            LOG.error("Modify User: " + username + "'s information failure in DAO object", e);
+            return false;
         }
     }
 }

@@ -4,9 +4,12 @@ USE musicPlayer;
 
 CREATE TABLE IF NOT EXISTS user
 (
-    id       INTEGER PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(20) NOT NULL,
-    password VARCHAR(50) NOT NULL
+    id           INTEGER PRIMARY KEY AUTO_INCREMENT,
+    username     VARCHAR(20) NOT NULL,
+    password     VARCHAR(50) NOT NULL,
+    gender       CHAR,
+    birthday     TIMESTAMP,
+    introduction VARCHAR(50)
 ) ENGINE = innodb
   default charset = utf8mb4;
 
