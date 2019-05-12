@@ -7,12 +7,12 @@ import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,7 +55,7 @@ public class CommentDAO {
             int id = resultSet.getInt("id");
             String username = resultSet.getString("username");
             String content = resultSet.getString("username");
-            Date date = resultSet.getDate("date");
+            Timestamp date = resultSet.getTimestamp("date");
 
             Instant instant = date.toInstant();
             ZoneId zoneId = ZoneId.systemDefault();
@@ -77,7 +77,7 @@ public class CommentDAO {
         String username = comment.getUsername();
         int musicId = comment.getMusic().getId();
         String content = comment.getContent();
-        Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+        Timestamp date = Timestamp.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
         Connection connection = JDBCUtils.getConnection();
         JDBCUtils.executeUpdate(connection, sql, username, musicId, content, date);
     }

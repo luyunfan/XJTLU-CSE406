@@ -7,8 +7,10 @@ import per.yunfan.cse406.musicplayer.service.UserService;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.rmi.RemoteException;
 
+@WebListener()
 public class RMIServerListener implements ServletContextListener {
 
     private static final Logger LOG = LogManager.getLogger(RMIServerListener.class);

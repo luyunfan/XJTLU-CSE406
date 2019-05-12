@@ -5,12 +5,16 @@ import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -84,6 +88,51 @@ public enum UserDAOImpl implements UserDAO {
     }
 
     /**
+     * Modify the user's information
+     *
+     * @param username     Username
+     * @param gender       User's gender
+     * @param birthday     User's Birthday
+     * @param introduction User's introduction
+     * @return Is successful
+     * @throws SQLException SQL update exception
+     */
+    @Override
+    public boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws SQLException {
+        final String sql = "UPDATE user SET gender = ?, birthday = ?, introduction = ? WHERE username = ?;";
+        Connection connection = JDBCUtils.getConnection();
+        int line = JDBCUtils.executeUpdate(connection,
+                sql,
+                gender,
+                Timestamp.valueOf(birthday.atStartOfDay()),
+                introduction,
+                username
+        );
+        return line != 0;
+    }
+
+    /**
+     * Get user information by username
+     *
+     * @param userName Username
+     * @return User's information if this user is exist
+     * @throws SQLException SQL query exception
+     */
+    @Override
+    public Optional<UserInfoVO> getUserInfoByName(String userName) throws SQLException {
+        Optional<User> user = findUserByName(userName);
+        if (user.isPresent()) {
+            User userData = user.get();
+            UserInfoVO result = new UserInfoVO(
+                    userData.getGender(),
+                    userData.getBirthday().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    userData.getIntroduction());
+            return Optional.of(result);
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Find user by username
      *
      * @param username username
@@ -91,15 +140,23 @@ public enum UserDAOImpl implements UserDAO {
      * @throws SQLException SQL query exception
      */
     private Optional<User> findUserByName(String username) throws SQLException {
-        final String sql = "SELECT id, password FROM user WHERE username = ?;";
+        final String sql = "SELECT id, password, gender, birthday, introduction FROM user WHERE username = ?;";
         Connection connection = JDBCUtils.getConnection();
         ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, username);
         resultSet.next();
         int id = resultSet.getInt("id");
         String passRight = resultSet.getString("password");
+        char gender = resultSet.getString("gender").charAt(0);
+        Timestamp birthday = resultSet.getTimestamp("birthday");
+        String introduction = resultSet.getString("introduction");
         if (passRight == null) {
             return Optional.empty();
         }
-        return Optional.of(new User(id, username, passRight));
+        return Optional.of(
+                new User(id, username, passRight)
+                        .setGender(gender)
+                        .setBirthday(birthday.toLocalDateTime().toLocalDate())
+                        .setIntroduction(introduction)
+        );
     }
 }

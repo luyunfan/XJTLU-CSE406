@@ -123,6 +123,8 @@ public final class JDBCUtils {
                 preparedStatement.setLong(i, (Long) para[i - 1]);
             } else if (value instanceof Boolean) {
                 preparedStatement.setBoolean(i, (Boolean) para[i - 1]);
+            } else if (value instanceof Timestamp) {
+                preparedStatement.setTimestamp(i, (Timestamp) value);
             } else {
                 throw new SQLException("Not support parameter type: " + value.getClass() + " now.");
             }

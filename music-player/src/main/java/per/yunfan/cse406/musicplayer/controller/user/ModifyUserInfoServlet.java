@@ -2,10 +2,10 @@ package per.yunfan.cse406.musicplayer.controller.user;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import per.yunfan.cse406.musicplayer.enums.UserStates;
-import per.yunfan.cse406.musicplayer.model.vo.UserVO;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -17,13 +17,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
- * User sign in servlet
+ * Modify user's information
  */
-@WebServlet("/SignIn")
-public class SignInServlet extends HttpServlet {
+@WebServlet("/ModifyUser")
+public class ModifyUserInfoServlet extends HttpServlet {
+
+    /**
+     * LocalDateTime formatter
+     */
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd");
 
     /**
      * User server object
@@ -32,13 +41,13 @@ public class SignInServlet extends HttpServlet {
             .instance()
             .getClient("localhost", UserService.port());
 
+    public ModifyUserInfoServlet() throws RemoteException, NotBoundException {
+    }
+
     /**
      * Logger object by log4j2
      */
-    private static final Logger LOG = LogManager.getLogger(SignInServlet.class);
-
-    public SignInServlet() throws RemoteException, NotBoundException {
-    }
+    private static final Logger LOG = LogManager.getLogger(ModifyUserInfoServlet.class);
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -94,33 +103,72 @@ public class SignInServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<UserVO> newUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
-
-        if (newUser.isPresent()) { //Json String is right
-            UserVO user = newUser.get();
-            UserStates states = userService.signIn(user.getUsername(), user.getPassword());
-            user.setStates(JSONUtils.FAILURE); //if success, set to successful
-
-            switch (states) {
-                case SUCCESS:
-                    user.setStates(JSONUtils.SUCCESS);
-                    break;
-                case ALREADY_EXIST:
-                    user.setErrorInfo("User: " + user.getUsername() + " has already exist.");
-                    break;
-                case USERNAME_ILLEGAL:
-                    user.setErrorInfo("Username: " + user.getUsername() + " is illegal.");
-                    break;
-                case UNKNOWN_ERROR:
-                    user.setErrorInfo("Server error.");
-                    break;
+        Optional<UserInfoVO> userInfoVO = JSONUtils.getJSONObjectByRequest(req, UserInfoVO.class);
+        if (userInfoVO.isPresent()) {
+            UserInfoVO modified = userInfoVO.get();
+            Optional<String> idAndUserName = RedisUtils.get(modified.getToken());
+            if (!idAndUserName.isPresent()) {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("You are not login, illegal operator! ")
+                        )
+                );
+                return;
             }
-            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(user));
 
+            char gender = modified.getGender();
+            String birthday = modified.getBirthday();
+            String introduction = modified.getIntroduction();
+            if (gender != 'f' && gender != 'm' && gender != 'n' && gender != 'o') {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("User gender format is incorrect! ")
+                        )
+                );
+                return;
+            }
+            try {
+                LocalDate dayOfBirth = LocalDate.parse(birthday, FORMATTER);
+                String userName = idAndUserName.get().split("_")[1];
+                boolean isSuccessful = userService.modifyUserInfo(userName, gender, dayOfBirth, introduction);
+                if (isSuccessful) {
+                    modified.setStates(JSONUtils.SUCCESS);
+                    JSONUtils.writeJSONToResponse(resp,
+                            JSONUtils.serializationJSON(modified)
+                    );
+                } else {
+                    JSONUtils.writeJSONToResponse(
+                            resp,
+                            JSONUtils.serializationJSON(
+                                    UserInfoVO.FAILURE.setErrorInfo("User information are not change! ")
+                            )
+                    );
+                }
+            } catch (DateTimeParseException e) {
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("User birthday format is incorrect! ")
+                        )
+                );
+            } catch (ArrayIndexOutOfBoundsException e) {
+                LOG.error("The format of received token from Redis is not correct. token: " + idAndUserName, e);
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(
+                                UserInfoVO.FAILURE.setErrorInfo("Server internal error! ")
+                        )
+                );
+            }
         } else {
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
+                    JSONUtils.serializationJSON(
+                            UserInfoVO.FAILURE.setErrorInfo("User information JSON format is incorrect! ")
+                    )
+            );
         }
     }
 }

@@ -3,8 +3,10 @@ package per.yunfan.cse406.musicplayer.dao;
 import per.yunfan.cse406.musicplayer.dao.user.UserDAOImpl;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface UserDAO {
@@ -34,6 +36,28 @@ public interface UserDAO {
      * @param userName username
      * @param password password
      * @return Sign in States
+     * @throws SQLException SQL update exception
      */
     UserStates signIn(String userName, String password) throws SQLException;
+
+    /**
+     * Modify the user's information
+     *
+     * @param username     Username
+     * @param gender       User's gender
+     * @param birthday     User's Birthday
+     * @param introduction User's introduction
+     * @return Is successful
+     * @throws SQLException SQL update exception
+     */
+    boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws SQLException;
+
+    /**
+     * Get user information by username
+     *
+     * @param userName Username
+     * @return User's information if this user is exist
+     * @throws SQLException SQL query exception
+     */
+    Optional<UserInfoVO> getUserInfoByName(String userName) throws SQLException;
 }

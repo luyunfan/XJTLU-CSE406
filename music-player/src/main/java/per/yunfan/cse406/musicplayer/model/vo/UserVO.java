@@ -1,13 +1,13 @@
 package per.yunfan.cse406.musicplayer.model.vo;
 
+import per.yunfan.cse406.musicplayer.model.vo.traits.WithErrorInfo;
+import per.yunfan.cse406.musicplayer.model.vo.traits.WithToken;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-
-import java.io.Serializable;
 
 /**
  * User VO Java bean
  */
-public class UserVO implements Serializable {
+public class UserVO implements WithErrorInfo<UserVO>, WithToken<UserVO> {
 
     /**
      * Singleton failure result object
@@ -30,9 +30,15 @@ public class UserVO implements Serializable {
     private String states;
 
     /**
-     * Failure information
+     * Error information
      */
-    private String info;
+    private String errorInfo;
+
+    /**
+     * Token
+     */
+    private String token;
+
 
     public UserVO(String username, String password, String states) {
         this.username = username;
@@ -67,11 +73,25 @@ public class UserVO implements Serializable {
         this.states = states;
     }
 
-    public String getInfo() {
-        return info;
+    @Override
+    public String getErrorInfo() {
+        return this.errorInfo;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    @Override
+    public UserVO setErrorInfo(String errorInfo) {
+        this.errorInfo = errorInfo;
+        return this;
+    }
+
+    @Override
+    public String getToken() {
+        return this.token;
+    }
+
+    @Override
+    public UserVO setToken(String token) {
+        this.token = token;
+        return this;
     }
 }

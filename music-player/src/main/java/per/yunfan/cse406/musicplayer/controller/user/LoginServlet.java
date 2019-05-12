@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * User login servlet
  */
-@WebServlet("/login")
+@WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -107,11 +107,15 @@ public class LoginServlet extends HttpServlet {
                     JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
                 }
             } else {
-                JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(UserVO.FAILURE));
+                JSONUtils.writeJSONToResponse(
+                        resp,
+                        JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
             }
         } catch (RemoteException e) {
             LOG.error("Could not connect to User RMI service! ", e);
-            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(UserVO.FAILURE));
+            JSONUtils.writeJSONToResponse(
+                    resp,
+                    JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("Server internal error! ")));
         }
     }
 }

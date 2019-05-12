@@ -1,6 +1,7 @@
 package per.yunfan.cse406.musicplayer.model.po;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * User Java bean class
@@ -21,6 +22,21 @@ public class User implements Serializable {
      * User password
      */
     private String password;
+
+    /**
+     * User gender, f = female, m = male, n = known, o = other
+     */
+    private char gender;
+
+    /**
+     * User's birthday
+     */
+    private LocalDate birthday;
+
+    /**
+     * User's self introduction
+     */
+    private String introduction;
 
     /**
      * User constructor
@@ -46,8 +62,9 @@ public class User implements Serializable {
      *
      * @param id User id
      */
-    public void setId(int id) {
+    public User setId(int id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -55,8 +72,9 @@ public class User implements Serializable {
      *
      * @param userName User name
      */
-    public void setUserName(String userName) {
+    public User setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     /**
@@ -64,8 +82,9 @@ public class User implements Serializable {
      *
      * @param password User password
      */
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     /**
@@ -87,5 +106,32 @@ public class User implements Serializable {
      */
     public String getPassword() {
         return password;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public User setGender(char gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public User setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+        return this;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public User setIntroduction(String introduction) {
+        this.introduction = introduction;
+        return this;
     }
 }

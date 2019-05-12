@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.dao.UserDAO;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
+import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -86,6 +88,41 @@ public enum UserServiceImpl implements UserService {
         } catch (SQLException e) {
             LOG.error("Sign in user: " + username + " failure in DAO object", e);
             return UserStates.UNKNOWN_ERROR;
+        }
+    }
+
+    /**
+     * Modify the user's information
+     *
+     * @param username     Username
+     * @param gender       User's gender
+     * @param birthday     User's Birthday
+     * @param introduction User's introduction
+     * @return Is successful
+     */
+    @Override
+    public boolean modifyUserInfo(String username, char gender, LocalDate birthday, String introduction) throws RemoteException {
+        try {
+            return userDAO.modifyUserInfo(username, gender, birthday, introduction);
+        } catch (SQLException e) {
+            LOG.error("Modify User: " + username + "'s information failure in DAO object", e);
+            return false;
+        }
+    }
+
+    /**
+     * Get user information by username
+     *
+     * @param userName Username
+     * @return User's information if this user is exist
+     */
+    @Override
+    public Optional<UserInfoVO> getUserInfoByName(String userName) throws RemoteException {
+        try {
+            return userDAO.getUserInfoByName(userName);
+        } catch (SQLException e) {
+            LOG.error("Finding user: " + userName + " failure!", e);
+            return Optional.empty();
         }
     }
 }
