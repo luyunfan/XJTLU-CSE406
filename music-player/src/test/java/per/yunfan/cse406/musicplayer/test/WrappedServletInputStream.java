@@ -5,10 +5,21 @@ import javax.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+/**
+ * For test only, it wrapped a ByteArrayInputStream and help testing servlet to pass json
+ */
 public class WrappedServletInputStream extends ServletInputStream {
 
+    /**
+     * Wrapped InputStream for customization
+     */
     private final ByteArrayInputStream wrapped;
 
+    /**
+     * Constructor for this test stream
+     *
+     * @param inputStream Wrapped InputStream for customization
+     */
     public WrappedServletInputStream(ByteArrayInputStream inputStream) {
         this.wrapped = inputStream;
     }
