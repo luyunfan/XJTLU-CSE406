@@ -51,7 +51,7 @@ public class Optional<T> implements Serializable {
         throw new NoSuchElementException("Optional doesn't have nullable value!");
     }
 
-    private static class Else implements Serializable {
+    public static class Else implements Serializable {
         private final boolean isRun;
 
         private static final Else DO_NOTHING = new Else(false);
