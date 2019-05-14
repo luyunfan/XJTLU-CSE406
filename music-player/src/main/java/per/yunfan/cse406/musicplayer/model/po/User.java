@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * User Java bean class
+ * User PO Java bean class
  */
 public class User implements Serializable {
 
@@ -61,6 +61,7 @@ public class User implements Serializable {
      * User id setter
      *
      * @param id User id
+     * @return This user object
      */
     public User setId(int id) {
         this.id = id;
@@ -71,6 +72,7 @@ public class User implements Serializable {
      * User name setter
      *
      * @param userName User name
+     * @return This user object
      */
     public User setUserName(String userName) {
         this.userName = userName;
@@ -81,6 +83,7 @@ public class User implements Serializable {
      * User password setter
      *
      * @param password User password
+     * @return This User object
      */
     public User setPassword(String password) {
         this.password = password;
@@ -108,28 +111,55 @@ public class User implements Serializable {
         return password;
     }
 
+    /**
+     * @return User gender
+     */
     public char getGender() {
         return gender;
     }
 
+    /**
+     * Set user gender
+     *
+     * @param gender User gender
+     * @return This user object
+     */
     public User setGender(char gender) {
         this.gender = gender;
         return this;
     }
 
+    /**
+     * @return User's birthday
+     */
     public LocalDate getBirthday() {
         return birthday;
     }
 
+    /**
+     * Set user's birthday
+     *
+     * @param birthday User's birthday
+     * @return This user object
+     */
     public User setBirthday(LocalDate birthday) {
         this.birthday = birthday;
         return this;
     }
 
+    /**
+     * @return User's introduction text
+     */
     public String getIntroduction() {
         return introduction;
     }
 
+    /**
+     * Set user's introduction text
+     *
+     * @param introduction User's introduction text
+     * @return This user object
+     */
     public User setIntroduction(String introduction) {
         this.introduction = introduction;
         return this;

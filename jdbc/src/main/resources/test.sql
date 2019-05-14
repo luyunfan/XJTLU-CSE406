@@ -112,7 +112,7 @@ VALUES (100, 'Wong', 22),
 CREATE TABLE `date_test`
 (
   `id`    int(11) NOT NULL,
-  `birth` date DEFAULT NULL
+  `birth` dateTime DEFAULT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -246,8 +246,8 @@ CREATE TABLE `loan`
 (
   `call_no`  int(11) NOT NULL,
   `user_id`  int(11)        DEFAULT NULL,
-  `date_due` date           DEFAULT NULL,
-  `date_ret` date           DEFAULT NULL,
+  `date_due` dateTime           DEFAULT NULL,
+  `date_ret` dateTime           DEFAULT NULL,
   `fine`     decimal(10, 2) DEFAULT NULL,
   `paid`     tinyint(1)     DEFAULT NULL
 ) ENGINE = InnoDB

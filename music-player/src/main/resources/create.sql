@@ -27,6 +27,6 @@ CREATE TABLE IF NOT EXISTS comment
     musicId  INTEGER     NOT NULL,
     username VARCHAR(20) NOT NULL,
     content  VARCHAR(50) NOT NULL,
-    date     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    dateTime     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = innodb
   default charset = utf8mb4;

@@ -2,27 +2,57 @@ package per.yunfan.cse406.musicplayer.model.vo;
 
 import per.yunfan.cse406.musicplayer.model.vo.traits.WithToken;
 
+/**
+ * Comment VO Java bean class
+ */
 public class CommentVO implements WithToken<CommentVO> {
+
+    /**
+     * Comment username
+     */
     private String username;
 
+    /**
+     * Comment content
+     */
     private String content;
 
-    private String date;
+    /**
+     * Comment datetime string (yyyy-MM-dd HH:mm:ss)
+     */
+    private String dateTime;
 
+    /**
+     * Comment music id
+     */
     private int musicId;
 
+    /**
+     * User token
+     */
     private String token;
 
-    public CommentVO(String username, String content, String date, int musicId, String token) {
+    /**
+     * CommentVO constructor
+     *
+     * @param username Comment username
+     * @param content  Comment content
+     * @param dateTime Comment datetime string (yyyy-MM-dd HH:mm:ss)
+     * @param musicId  Comment music id
+     * @param token    User token
+     */
+    public CommentVO(String username, String content, String dateTime, int musicId, String token) {
         this.token = token;
         this.username = username;
         this.content = content;
-        this.date = date;
+        this.dateTime = dateTime;
         this.musicId = musicId;
     }
 
+    /**
+     * CommentVO constructor with no arguments
+     */
     public CommentVO() {
-        super();
     }
 
     public String getUsername() {
@@ -43,12 +73,12 @@ public class CommentVO implements WithToken<CommentVO> {
         return this;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public CommentVO setDate(String date) {
-        this.date = date;
+    public CommentVO setDateTime(String dateTime) {
+        this.dateTime = dateTime;
         return this;
     }
 
@@ -66,7 +96,7 @@ public class CommentVO implements WithToken<CommentVO> {
         return "CommentVO{" +
                 "username='" + username + '\'' +
                 ", content='" + content + '\'' +
-                ", date='" + date + '\'' +
+                ", dateTime='" + dateTime + '\'' +
                 ", musicId=" + musicId +
                 ", token='" + token + '\'' +
                 '}';
