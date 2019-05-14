@@ -46,7 +46,7 @@ public class UserServletTest {
         UserVO signIn = new UserVO()
                 .setUsername("Roland")
                 .setPassword("TestPass");
-        String json = JSONUtils.serializationJSON(signIn);
+        String json = JSONUtils.serializeJSON(signIn);
         assert json != null;
         ByteArrayInputStream stream = new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8")));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -93,7 +93,7 @@ public class UserServletTest {
         UserVO login = new UserVO()
                 .setUsername("Frank")
                 .setPassword(pass);
-        String json = JSONUtils.serializationJSON(login);
+        String json = JSONUtils.serializeJSON(login);
         assert json != null;
 
         ByteArrayInputStream stream = new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8")));
@@ -148,7 +148,7 @@ public class UserServletTest {
                 .setBirthday("1930-04-28")
                 .setIntroduction("A geek");
 
-        String json = JSONUtils.serializationJSON(modifyInfo);
+        String json = JSONUtils.serializeJSON(modifyInfo);
         assert json != null;
         ByteArrayInputStream stream = new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8")));
         ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -28,7 +28,7 @@ public class WithTokenTest {
                 1,
                 "tokenString"
         );
-        String str = JSONUtils.serializationJSON(commentVO);
+        String str = JSONUtils.serializeJSON(commentVO);
         LOG.info("JSON String: " + str);
 
         CommentVO deserialize = JSONUtils

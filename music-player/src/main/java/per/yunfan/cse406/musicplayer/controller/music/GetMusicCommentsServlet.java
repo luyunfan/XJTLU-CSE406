@@ -7,7 +7,7 @@ import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -103,7 +103,7 @@ public class GetMusicCommentsServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
+        Nullable<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
         if (!musicVO.isPresent()) {
             responseFailure(resp);
             return;
@@ -115,7 +115,7 @@ public class GetMusicCommentsServlet extends HttpServlet {
         }
         try {
             int id = Integer.parseInt(playId);
-            Optional<Music> music = musicService.getMusicById(id);
+            Nullable<Music> music = musicService.getMusicById(id);
             if (!music.isPresent()) {
                 responseFailure(resp);
                 return;
@@ -133,7 +133,7 @@ public class GetMusicCommentsServlet extends HttpServlet {
 
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(result)
+                    JSONUtils.serializeJSON(result)
             );
         } catch (NumberFormatException e) {
             LOG.warn("User input music id: " + playId + " is not a number! ", e);
@@ -150,7 +150,7 @@ public class GetMusicCommentsServlet extends HttpServlet {
     private void responseFailure(HttpServletResponse resp) {
         JSONUtils.writeJSONToResponse(
                 resp,
-                JSONUtils.serializationJSON(Collections.emptyList())
+                JSONUtils.serializeJSON(Collections.emptyList())
         );
     }
 }

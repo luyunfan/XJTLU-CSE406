@@ -100,7 +100,7 @@ public class GetAllMusicServlet extends HttpServlet {
         if (allMusic == null || allMusic.isEmpty()) {
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(Collections.singletonList(MusicVO.FAILURE))
+                    JSONUtils.serializeJSON(Collections.singletonList(MusicVO.FAILURE))
             );
         } else {
             List<MusicVO> result = allMusic.entrySet()
@@ -113,7 +113,7 @@ public class GetAllMusicServlet extends HttpServlet {
 
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(result)
+                    JSONUtils.serializeJSON(result)
             );
         }
     }

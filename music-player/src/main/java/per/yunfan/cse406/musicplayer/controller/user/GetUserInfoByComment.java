@@ -4,7 +4,7 @@ import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
@@ -85,31 +85,31 @@ public class GetUserInfoByComment extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
+        Nullable<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
         if (commentVO.isPresent()) {
             CommentVO comment = commentVO.get();
 
-            Optional<String> idAndUserName = RedisUtils.get(comment.getToken());
+            Nullable<String> idAndUserName = RedisUtils.get(comment.getToken());
             if (!idAndUserName.isPresent()) {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("You are not login, illegal operator! ")
                         )
                 );
                 return;
             }
             String username = comment.getUsername();
-            Optional<UserInfoVO> result = userService.getUserInfoByName(username);
+            Nullable<UserInfoVO> result = userService.getUserInfoByName(username);
             if (result.isPresent()) {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(result.get())
+                        JSONUtils.serializeJSON(result.get())
                 );
             } else {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("User is not exists.")
                         )
                 );
@@ -117,7 +117,7 @@ public class GetUserInfoByComment extends HttpServlet {
         } else {
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(
+                    JSONUtils.serializeJSON(
                             UserInfoVO.FAILURE.setErrorInfo("User information JSON format is incorrect! ")
                     )
             );

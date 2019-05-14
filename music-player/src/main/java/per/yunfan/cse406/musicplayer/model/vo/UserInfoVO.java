@@ -4,6 +4,9 @@ import per.yunfan.cse406.musicplayer.model.vo.traits.WithErrorInfo;
 import per.yunfan.cse406.musicplayer.model.vo.traits.WithToken;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
+/**
+ * Additional userVO information Java bean class
+ */
 public class UserInfoVO implements WithToken<UserInfoVO>, WithErrorInfo<UserInfoVO> {
 
     /**

@@ -6,7 +6,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -95,7 +95,7 @@ public class SignInServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<UserVO> newUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
+        Nullable<UserVO> newUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
 
         if (newUser.isPresent()) { //Json String is right
             UserVO user = newUser.get();
@@ -117,12 +117,12 @@ public class SignInServlet extends HttpServlet {
                     user.setErrorInfo("Server error.");
                     break;
             }
-            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(user));
+            JSONUtils.writeJSONToResponse(resp, JSONUtils.serializeJSON(user));
 
         } else {
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
+                    JSONUtils.serializeJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
         }
     }
 }

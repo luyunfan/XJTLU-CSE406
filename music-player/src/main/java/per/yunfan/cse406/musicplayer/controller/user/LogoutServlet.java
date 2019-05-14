@@ -2,7 +2,7 @@ package per.yunfan.cse406.musicplayer.controller.user;
 
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
@@ -71,7 +71,7 @@ public class LogoutServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<UserVO> logoutUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
+        Nullable<UserVO> logoutUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
         if (logoutUser.isPresent()) {
             UserVO needLogout = logoutUser.get();
             String token = needLogout.getToken();

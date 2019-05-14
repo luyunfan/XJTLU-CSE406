@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
@@ -103,14 +103,14 @@ public class ModifyUserInfoServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<UserInfoVO> userInfoVO = JSONUtils.getJSONObjectByRequest(req, UserInfoVO.class);
+        Nullable<UserInfoVO> userInfoVO = JSONUtils.getJSONObjectByRequest(req, UserInfoVO.class);
         if (userInfoVO.isPresent()) {
             UserInfoVO modified = userInfoVO.get();
-            Optional<String> idAndUserName = RedisUtils.get(modified.getToken());
+            Nullable<String> idAndUserName = RedisUtils.get(modified.getToken());
             if (!idAndUserName.isPresent()) {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("You are not login, illegal operator! ")
                         )
                 );
@@ -123,7 +123,7 @@ public class ModifyUserInfoServlet extends HttpServlet {
             if (gender != 'f' && gender != 'm' && gender != 'n' && gender != 'o') {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("User gender format is incorrect! ")
                         )
                 );
@@ -136,12 +136,12 @@ public class ModifyUserInfoServlet extends HttpServlet {
                 if (isSuccessful) {
                     modified.setStates(JSONUtils.SUCCESS);
                     JSONUtils.writeJSONToResponse(resp,
-                            JSONUtils.serializationJSON(modified)
+                            JSONUtils.serializeJSON(modified)
                     );
                 } else {
                     JSONUtils.writeJSONToResponse(
                             resp,
-                            JSONUtils.serializationJSON(
+                            JSONUtils.serializeJSON(
                                     UserInfoVO.FAILURE.setErrorInfo("User information are not change! ")
                             )
                     );
@@ -149,7 +149,7 @@ public class ModifyUserInfoServlet extends HttpServlet {
             } catch (DateTimeParseException e) {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("User birthday format is incorrect! ")
                         )
                 );
@@ -157,7 +157,7 @@ public class ModifyUserInfoServlet extends HttpServlet {
                 LOG.error("The format of received token from Redis is not correct. token: " + idAndUserName, e);
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(
+                        JSONUtils.serializeJSON(
                                 UserInfoVO.FAILURE.setErrorInfo("Server internal error! ")
                         )
                 );
@@ -165,7 +165,7 @@ public class ModifyUserInfoServlet extends HttpServlet {
         } else {
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(
+                    JSONUtils.serializeJSON(
                             UserInfoVO.FAILURE.setErrorInfo("User information JSON format is incorrect! ")
                     )
             );

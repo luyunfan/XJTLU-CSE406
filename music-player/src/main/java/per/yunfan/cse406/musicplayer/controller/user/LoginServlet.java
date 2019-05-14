@@ -6,7 +6,7 @@ import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
@@ -89,33 +89,33 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        Optional<UserVO> loginUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
+        Nullable<UserVO> loginUser = JSONUtils.getJSONObjectByRequest(req, UserVO.class);
         try {
             if (loginUser.isPresent()) { //Json String is right
                 UserVO tryLogin = loginUser.get();
-                Optional<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
+                Nullable<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
                 if (user.isPresent()) { //Login successful
                     User successUser = user.get();
                     tryLogin.setToken(PasswordUtils.createToken(successUser.getId()));
                     tryLogin.setStates(JSONUtils.SUCCESS);
                     //key = token, value = id_username
                     RedisUtils.set(tryLogin.getToken(), (successUser.getId() + "_" + successUser.getUserName()));
-                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializeJSON(tryLogin));
                     LOG.info("User: " + successUser.getUserName() + " login.");
                 } else {
                     tryLogin.setStates(JSONUtils.FAILURE);
-                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
+                    JSONUtils.writeJSONToResponse(resp, JSONUtils.serializeJSON(tryLogin));
                 }
             } else {
                 JSONUtils.writeJSONToResponse(
                         resp,
-                        JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
+                        JSONUtils.serializeJSON(UserVO.FAILURE.setErrorInfo("User JSON format is incorrect! ")));
             }
         } catch (RemoteException e) {
             LOG.error("Could not connect to User RMI service! ", e);
             JSONUtils.writeJSONToResponse(
                     resp,
-                    JSONUtils.serializationJSON(UserVO.FAILURE.setErrorInfo("Server internal error! ")));
+                    JSONUtils.serializeJSON(UserVO.FAILURE.setErrorInfo("Server internal error! ")));
         }
     }
 }

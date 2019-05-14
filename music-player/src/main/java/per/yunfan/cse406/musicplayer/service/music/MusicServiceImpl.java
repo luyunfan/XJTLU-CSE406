@@ -7,7 +7,7 @@ import per.yunfan.cse406.musicplayer.dao.music.CommentDAO;
 import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.MusicService;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -97,12 +97,12 @@ public enum MusicServiceImpl implements MusicService {
      * @return Music object
      */
     @Override
-    public Optional<Music> getMusicById(int id) throws RemoteException {
+    public Nullable<Music> getMusicById(int id) throws RemoteException {
         try {
             return musicDAO.getMusicById(id);
         } catch (SQLException e) {
             LOG.error("Get music by id failure! ", e);
-            return Optional.empty();
+            return Nullable.empty();
         }
     }
 
