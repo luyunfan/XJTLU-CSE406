@@ -55,10 +55,19 @@ public class CommentVO implements WithToken<CommentVO> {
     public CommentVO() {
     }
 
+    /**
+     * @return Comment username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Set comment username
+     *
+     * @param username Comment username
+     * @return This comment object
+     */
     public CommentVO setUsername(String username) {
         this.username = username;
         return this;

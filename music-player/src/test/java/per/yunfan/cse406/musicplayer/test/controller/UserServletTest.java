@@ -10,7 +10,7 @@ import per.yunfan.cse406.musicplayer.controller.user.SignInServlet;
 import per.yunfan.cse406.musicplayer.listener.RMIServerListener;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
-import per.yunfan.cse406.musicplayer.test.WarpedServletInputStream;
+import per.yunfan.cse406.musicplayer.test.WrappedServletInputStream;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
@@ -57,7 +57,7 @@ public class UserServletTest {
         ServletContext context = EasyMock.createMock(ServletContext.class);
 
         EasyMock.expect(config.getServletContext()).andReturn(context).anyTimes();
-        EasyMock.expect(request.getInputStream()).andReturn(new WarpedServletInputStream(stream)).anyTimes();
+        EasyMock.expect(request.getInputStream()).andReturn(new WrappedServletInputStream(stream)).anyTimes();
         EasyMock.expect(request.getMethod()).andReturn("POST").anyTimes();
         EasyMock.expect(response.getWriter()).andReturn(new PrintWriter(out, true)).anyTimes();
         response.setContentType("application/json;charset=utf-8");
@@ -105,7 +105,7 @@ public class UserServletTest {
         ServletContext context = EasyMock.createMock(ServletContext.class);
 
         EasyMock.expect(config.getServletContext()).andReturn(context).anyTimes();
-        EasyMock.expect(request.getInputStream()).andReturn(new WarpedServletInputStream(stream)).anyTimes();
+        EasyMock.expect(request.getInputStream()).andReturn(new WrappedServletInputStream(stream)).anyTimes();
         EasyMock.expect(request.getMethod()).andReturn("POST").anyTimes();
         EasyMock.expect(response.getWriter()).andReturn(new PrintWriter(out, true)).anyTimes();
         response.setContentType("application/json;charset=utf-8");
@@ -159,7 +159,7 @@ public class UserServletTest {
         ServletContext context = EasyMock.createMock(ServletContext.class);
 
         EasyMock.expect(config.getServletContext()).andReturn(context).anyTimes();
-        EasyMock.expect(request.getInputStream()).andReturn(new WarpedServletInputStream(stream)).anyTimes();
+        EasyMock.expect(request.getInputStream()).andReturn(new WrappedServletInputStream(stream)).anyTimes();
         EasyMock.expect(request.getMethod()).andReturn("POST").anyTimes();
         EasyMock.expect(response.getWriter()).andReturn(new PrintWriter(out, true)).anyTimes();
         response.setContentType("application/json;charset=utf-8");
