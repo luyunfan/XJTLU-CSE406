@@ -43,23 +43,26 @@ public class MusicVO implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public MusicVO setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getPlayId() {
         return playId;
     }
 
-    public void setPlayId(String playId) {
+    public MusicVO setPlayId(String playId) {
         this.playId = playId;
+        return this;
     }
 
     public String getStates() {
         return states;
     }
 
-    public void setStates(String states) {
+    public MusicVO setStates(String states) {
         this.states = states;
+        return this;
     }
 }
