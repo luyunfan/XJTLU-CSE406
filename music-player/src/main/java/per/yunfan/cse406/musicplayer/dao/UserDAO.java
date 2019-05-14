@@ -4,10 +4,10 @@ import per.yunfan.cse406.musicplayer.dao.user.UserDAOImpl;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public interface UserDAO {
 

@@ -37,7 +37,7 @@ public final class PasswordUtils {
                     .digest(password.getBytes());
 
             for (byte b : pass) {
-                int salt = b & 0xCAFEBABE; //Salt
+                int salt = b & 0xCA; //Salt
                 String saltString = Integer.toHexString(salt);
                 if (1 == saltString.length()) {
                     result.append("0");

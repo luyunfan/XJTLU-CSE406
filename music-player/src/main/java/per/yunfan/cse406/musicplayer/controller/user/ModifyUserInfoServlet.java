@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
@@ -20,7 +21,6 @@ import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Optional;
 
 /**
  * Modify user's information

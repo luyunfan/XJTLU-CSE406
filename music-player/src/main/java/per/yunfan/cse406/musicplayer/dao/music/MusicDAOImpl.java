@@ -6,11 +6,16 @@ import per.yunfan.cse406.musicplayer.dao.MusicDAO;
 import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * MusicDAO implement class

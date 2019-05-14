@@ -4,6 +4,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -11,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.time.LocalDate;
-import java.util.Optional;
 
 /**
  * User service interface
