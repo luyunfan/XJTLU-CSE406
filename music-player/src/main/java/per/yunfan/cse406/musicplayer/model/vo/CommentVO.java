@@ -29,32 +29,36 @@ public class CommentVO implements WithToken<CommentVO> {
         return username;
     }
 
-    public void setUsername(String username) {
+    public CommentVO setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public CommentVO setContent(String content) {
         this.content = content;
+        return this;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public CommentVO setDate(String date) {
         this.date = date;
+        return this;
     }
 
     public int getMusicId() {
         return musicId;
     }
 
-    public void setMusicId(int musicId) {
+    public CommentVO setMusicId(int musicId) {
         this.musicId = musicId;
+        return this;
     }
 
     @Override

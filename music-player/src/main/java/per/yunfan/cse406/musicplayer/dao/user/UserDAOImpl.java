@@ -7,6 +7,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
 import java.sql.Connection;
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 /**
  * UserDAO implement class
@@ -137,26 +137,31 @@ public enum UserDAOImpl implements UserDAO {
      *
      * @param username username
      * @return if user not exist, return Optional.empty()
-     * @throws SQLException SQL query exception
      */
-    private Optional<User> findUserByName(String username) throws SQLException {
+    private Optional<User> findUserByName(String username) {
         final String sql = "SELECT id, password, gender, birthday, introduction FROM user WHERE username = ?;";
-        Connection connection = JDBCUtils.getConnection();
-        ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, username);
-        resultSet.next();
-        int id = resultSet.getInt("id");
-        String passRight = resultSet.getString("password");
-        char gender = resultSet.getString("gender").charAt(0);
-        Timestamp birthday = resultSet.getTimestamp("birthday");
-        String introduction = resultSet.getString("introduction");
-        if (passRight == null) {
+        try {
+            Connection connection = JDBCUtils.getConnection();
+            ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, username);
+            resultSet.next();
+            int id = resultSet.getInt("id");
+            String passRight = resultSet.getString("password");
+            String genderStr = resultSet.getString("gender");
+            char gender = genderStr == null ? 'n' : genderStr.charAt(0);
+            Timestamp birthday = resultSet.getTimestamp("birthday");
+            String introduction = resultSet.getString("introduction");
+            if (passRight == null) {
+                return Optional.empty();
+            }
+            LocalDate birth = birthday == null ? null : birthday.toLocalDateTime().toLocalDate();
+            return Optional.of(
+                    new User(id, username, passRight)
+                            .setGender(gender)
+                            .setBirthday(birth)
+                            .setIntroduction(introduction)
+            );
+        } catch (SQLException e) {
             return Optional.empty();
         }
-        return Optional.of(
-                new User(id, username, passRight)
-                        .setGender(gender)
-                        .setBirthday(birthday.toLocalDateTime().toLocalDate())
-                        .setIntroduction(introduction)
-        );
     }
 }

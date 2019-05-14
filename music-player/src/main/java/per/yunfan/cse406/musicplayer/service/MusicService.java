@@ -3,6 +3,7 @@ package per.yunfan.cse406.musicplayer.service;
 import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.music.MusicServiceImpl;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -11,7 +12,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Music service interface

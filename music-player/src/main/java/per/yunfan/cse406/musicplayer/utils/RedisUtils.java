@@ -8,9 +8,11 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.params.SetParams;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * Redis utility class
+ */
 public final class RedisUtils {
 
     /**

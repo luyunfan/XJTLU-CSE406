@@ -53,24 +53,27 @@ public class UserVO implements WithErrorInfo<UserVO>, WithToken<UserVO> {
         return username;
     }
 
-    public void setUsername(String username) {
+    public UserVO setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserVO setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getStates() {
         return states;
     }
 
-    public void setStates(String states) {
+    public UserVO setStates(String states) {
         this.states = states;
+        return this;
     }
 
     @Override

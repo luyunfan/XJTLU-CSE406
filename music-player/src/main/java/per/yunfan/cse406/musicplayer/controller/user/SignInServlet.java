@@ -6,6 +6,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Optional;
+
 
 /**
  * User sign in servlet
@@ -103,7 +104,8 @@ public class SignInServlet extends HttpServlet {
 
             switch (states) {
                 case SUCCESS:
-                    user.setStates(JSONUtils.SUCCESS);
+                    user.setPassword("")
+                            .setStates(JSONUtils.SUCCESS);
                     break;
                 case ALREADY_EXIST:
                     user.setErrorInfo("User: " + user.getUsername() + " has already exist.");

@@ -7,13 +7,14 @@ import per.yunfan.cse406.musicplayer.dao.music.CommentDAO;
 import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.service.MusicService;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 
 /**
  * Music service by RPC call

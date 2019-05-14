@@ -6,6 +6,7 @@ import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
+import per.yunfan.cse406.musicplayer.utils.Optional;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Optional;
 
 /**
  * User login servlet
@@ -96,10 +96,10 @@ public class LoginServlet extends HttpServlet {
                 Optional<User> user = userService.login(tryLogin.getUsername(), tryLogin.getPassword());
                 if (user.isPresent()) { //Login successful
                     User successUser = user.get();
-                    tryLogin.setPassword(PasswordUtils.createToken(successUser.getId()));
+                    tryLogin.setToken(PasswordUtils.createToken(successUser.getId()));
                     tryLogin.setStates(JSONUtils.SUCCESS);
                     //key = token, value = id_username
-                    RedisUtils.set(tryLogin.getPassword(), (successUser.getId() + "_" + successUser.getUserName()));
+                    RedisUtils.set(tryLogin.getToken(), (successUser.getId() + "_" + successUser.getUserName()));
                     JSONUtils.writeJSONToResponse(resp, JSONUtils.serializationJSON(tryLogin));
                     LOG.info("User: " + successUser.getUserName() + " login.");
                 } else {
