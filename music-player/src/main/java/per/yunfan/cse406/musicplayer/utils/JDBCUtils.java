@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Properties;
 
 /**
@@ -125,6 +126,10 @@ public final class JDBCUtils {
                 preparedStatement.setBoolean(i, (Boolean) para[i - 1]);
             } else if (value instanceof Timestamp) {
                 preparedStatement.setTimestamp(i, (Timestamp) value);
+            } else if (value instanceof Character) {
+                preparedStatement.setString(i, String.valueOf(value));
+            } else if (value instanceof LocalDate) {
+                preparedStatement.setDate(i, Date.valueOf((LocalDate) value));
             } else {
                 throw new SQLException("Not support parameter type: " + value.getClass() + " now.");
             }

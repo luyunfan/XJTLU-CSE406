@@ -104,7 +104,7 @@ public enum UserDAOImpl implements UserDAO {
         int line = JDBCUtils.executeUpdate(connection,
                 sql,
                 gender,
-                Timestamp.valueOf(birthday.atStartOfDay()),
+                birthday,
                 introduction,
                 username
         );

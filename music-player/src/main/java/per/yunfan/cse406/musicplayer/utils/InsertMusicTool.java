@@ -30,8 +30,9 @@ public class InsertMusicTool {
     private static final Path musicPath = Paths.get("");
 
     public static void main(String[] args) {
+        Path scanPath = args.length == 0 ? musicPath : Paths.get(args[0]);
         clearDatabase();
-        traverseFolder(musicPath.toFile(), everyFile -> {
+        traverseFolder(scanPath.toFile(), everyFile -> {
             if (everyFile.isFile() && everyFile.getName().endsWith(".mp3")) {
 
                 try {
