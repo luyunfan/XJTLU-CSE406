@@ -1,5 +1,6 @@
 package per.yunfan.cse406.musicplayer.test.controller;
 
+import javazoom.jl.player.Player;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -7,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import per.yunfan.cse406.musicplayer.controller.music.AddCommentServlet;
 import per.yunfan.cse406.musicplayer.controller.music.GetAllMusicServlet;
 import per.yunfan.cse406.musicplayer.controller.music.GetMusicCommentsServlet;
+import per.yunfan.cse406.musicplayer.controller.music.PlayServlet;
 import per.yunfan.cse406.musicplayer.listener.RMIServerListener;
 import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.test.WrappedServletInputStream;
+import per.yunfan.cse406.musicplayer.test.WrappedServletOutputStream;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
@@ -161,6 +164,46 @@ public class MusicServletTest {
         assertEquals(finalComments.get(0).getContent(), "This is a test comment");
 
 
+    }
+
+    @Test
+    public void testPlay() throws Exception {
+        MusicVO musicVO = new MusicVO()
+                .setPlayId("8");
+
+        String json = JSONUtils.serializeJSON(musicVO);
+        assert json != null;
+        ByteArrayInputStream stream = new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8")));
+
+        PlayServlet servlet = new PlayServlet();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        HttpServletRequest request = EasyMock.createMock(HttpServletRequest.class);
+        HttpServletResponse response = EasyMock.createMock(HttpServletResponse.class);
+        ServletConfig config = EasyMock.createMock(ServletConfig.class);
+        ServletContext context = EasyMock.createMock(ServletContext.class);
+
+        EasyMock.expect(config.getServletContext()).andReturn(context).anyTimes();
+        EasyMock.expect(request.getInputStream()).andReturn(new WrappedServletInputStream(stream)).anyTimes();
+        EasyMock.expect(request.getMethod()).andReturn("POST").anyTimes();
+        EasyMock.expect(response.getOutputStream()).andReturn(new WrappedServletOutputStream(out)).anyTimes();
+        response.setContentType("audio/mp3");
+        EasyMock.expectLastCall();
+        response.setCharacterEncoding("UTF-8");
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(request);
+        EasyMock.replay(response);
+        EasyMock.replay(config);
+        EasyMock.replay(context);
+
+        servlet.init(config);
+
+        runDoPost(servlet, request, response);
+
+        Player player = new Player(new ByteArrayInputStream(out.toByteArray()));
+        player.play(60);
     }
 
 
