@@ -7,7 +7,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.UserService;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -65,12 +65,12 @@ public enum UserServiceImpl implements UserService {
      * @return if login success, return an User object
      */
     @Override
-    public Optional<User> login(String username, String password) {
+    public Nullable<User> login(String username, String password) {
         try {
             return userDAO.login(username, password);
         } catch (SQLException e) {
             LOG.error("Login failure in DAO object", e);
-            return Optional.empty();
+            return Nullable.empty();
         }
     }
 
@@ -117,12 +117,12 @@ public enum UserServiceImpl implements UserService {
      * @return User's information if this user is exist
      */
     @Override
-    public Optional<UserInfoVO> getUserInfoByName(String userName) throws RemoteException {
+    public Nullable<UserInfoVO> getUserInfoByName(String userName) throws RemoteException {
         try {
             return userDAO.getUserInfoByName(userName);
         } catch (SQLException e) {
             LOG.error("Finding user: " + userName + " failure!", e);
-            return Optional.empty();
+            return Nullable.empty();
         }
     }
 }

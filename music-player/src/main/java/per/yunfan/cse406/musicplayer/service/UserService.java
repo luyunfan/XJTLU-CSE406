@@ -4,7 +4,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.service.user.UserServiceImpl;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -54,7 +54,7 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @param password Input password
      * @return if login success, return an User object
      */
-    Optional<User> login(String username, String password) throws RemoteException;
+    Nullable<User> login(String username, String password) throws RemoteException;
 
     /**
      * Sign in a new user
@@ -82,5 +82,5 @@ public interface UserService extends Remote, RMIService<UserService> {
      * @param userName Username
      * @return User's information if this user is exist
      */
-    Optional<UserInfoVO> getUserInfoByName(String userName) throws RemoteException;
+    Nullable<UserInfoVO> getUserInfoByName(String userName) throws RemoteException;
 }

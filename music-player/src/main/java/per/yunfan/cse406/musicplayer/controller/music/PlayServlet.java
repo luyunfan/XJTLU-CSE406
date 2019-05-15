@@ -6,7 +6,7 @@ import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.model.vo.MusicVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -98,7 +98,7 @@ public class PlayServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("audio/mp3");
         resp.setCharacterEncoding("UTF-8");
-        Optional<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
+        Nullable<MusicVO> musicVO = JSONUtils.getJSONObjectByRequest(req, MusicVO.class);
         if (!musicVO.isPresent()) {
             return;
         }
@@ -109,7 +109,7 @@ public class PlayServlet extends HttpServlet {
         String errorPath = null;
         try {
             int id = Integer.parseInt(playId);
-            Optional<Music> musicInfo = musicService.getMusicById(id);
+            Nullable<Music> musicInfo = musicService.getMusicById(id);
             if (musicInfo.isPresent()) {
                 Music music = musicInfo.get();
                 errorPath = music.getPath();

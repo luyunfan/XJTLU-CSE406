@@ -7,7 +7,7 @@ import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.PasswordUtils;
 
 import java.sql.Connection;
@@ -42,15 +42,15 @@ public enum UserDAOImpl implements UserDAO {
      * @throws SQLException SQL query exception
      */
     @Override
-    public Optional<User> login(String userName, String password) throws SQLException {
+    public Nullable<User> login(String userName, String password) throws SQLException {
         if (userName == null || password == null) {
-            return Optional.empty();
+            return Nullable.empty();
         }
-        Optional<User> result = findUserByName(userName);
+        Nullable<User> result = findUserByName(userName);
         if (result.isPresent()) {
             User user = result.get();
             if (user.getPassword() == null || !user.getPassword().equals(PasswordUtils.encryptedByMD5(password))) {
-                return Optional.empty();
+                return Nullable.empty();
             }
         }
         return result;
@@ -72,7 +72,7 @@ public enum UserDAOImpl implements UserDAO {
                 password.isEmpty()) {
             return UserStates.USERNAME_ILLEGAL;
         }
-        Optional<User> found = findUserByName(userName);
+        Nullable<User> found = findUserByName(userName);
         if (found.isPresent()) { //Already exists
             return UserStates.ALREADY_EXIST;
         }
@@ -104,7 +104,7 @@ public enum UserDAOImpl implements UserDAO {
         int line = JDBCUtils.executeUpdate(connection,
                 sql,
                 gender,
-                Timestamp.valueOf(birthday.atStartOfDay()),
+                birthday,
                 introduction,
                 username
         );
@@ -119,26 +119,26 @@ public enum UserDAOImpl implements UserDAO {
      * @throws SQLException SQL query exception
      */
     @Override
-    public Optional<UserInfoVO> getUserInfoByName(String userName) throws SQLException {
-        Optional<User> user = findUserByName(userName);
+    public Nullable<UserInfoVO> getUserInfoByName(String userName) throws SQLException {
+        Nullable<User> user = findUserByName(userName);
         if (user.isPresent()) {
             User userData = user.get();
             UserInfoVO result = new UserInfoVO(
                     userData.getGender(),
                     userData.getBirthday().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                     userData.getIntroduction());
-            return Optional.of(result);
+            return Nullable.of(result);
         }
-        return Optional.empty();
+        return Nullable.empty();
     }
 
     /**
      * Find user by username
      *
      * @param username username
-     * @return if user not exist, return Optional.empty()
+     * @return if user not exist, return Nullable.empty()
      */
-    private Optional<User> findUserByName(String username) {
+    private Nullable<User> findUserByName(String username) {
         final String sql = "SELECT id, password, gender, birthday, introduction FROM user WHERE username = ?;";
         try {
             Connection connection = JDBCUtils.getConnection();
@@ -151,17 +151,17 @@ public enum UserDAOImpl implements UserDAO {
             Timestamp birthday = resultSet.getTimestamp("birthday");
             String introduction = resultSet.getString("introduction");
             if (passRight == null) {
-                return Optional.empty();
+                return Nullable.empty();
             }
             LocalDate birth = birthday == null ? null : birthday.toLocalDateTime().toLocalDate();
-            return Optional.of(
+            return Nullable.of(
                     new User(id, username, passRight)
                             .setGender(gender)
                             .setBirthday(birth)
                             .setIntroduction(introduction)
             );
         } catch (SQLException e) {
-            return Optional.empty();
+            return Nullable.empty();
         }
     }
 }

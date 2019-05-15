@@ -23,11 +23,11 @@ public class JSONUtilsTest {
     @Test
     public void testCommentVO() throws IOException {
         CommentVO comment = new CommentVO();
-        System.out.println(JSONUtils.serializationJSON(comment));
+        System.out.println(JSONUtils.serializeJSON(comment));
         comment.setUsername("User1")
                 .setMusicId(1)
                 .setContent("content");
-        System.out.println(JSONUtils.serializationJSON(comment));
+        System.out.println(JSONUtils.serializeJSON(comment));
         String withTokenJson = "{\"token\":\"wdfhwioedjw\",\"musicId\":10}";
         CommentVO deserialize = JSONUtils.deserializationJSONToObject(withTokenJson, CommentVO.class);
         assertNotNull(deserialize);

@@ -5,12 +5,23 @@ import javax.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class WarpedServletInputStream extends ServletInputStream {
+/**
+ * For test only, it wrapped a ByteArrayInputStream and help testing servlet to pass json
+ */
+public class WrappedServletInputStream extends ServletInputStream {
 
-    private final ByteArrayInputStream warped;
+    /**
+     * Wrapped InputStream for customization
+     */
+    private final ByteArrayInputStream wrapped;
 
-    public WarpedServletInputStream(ByteArrayInputStream inputStream) {
-        this.warped = inputStream;
+    /**
+     * Constructor for this test stream
+     *
+     * @param inputStream Wrapped InputStream for customization
+     */
+    public WrappedServletInputStream(ByteArrayInputStream inputStream) {
+        this.wrapped = inputStream;
     }
 
     /**
@@ -23,7 +34,7 @@ public class WarpedServletInputStream extends ServletInputStream {
      */
     @Override
     public boolean isFinished() {
-        return warped.available() > 0;
+        return wrapped.available() > 0;
     }
 
     /**
@@ -74,6 +85,6 @@ public class WarpedServletInputStream extends ServletInputStream {
      */
     @Override
     public int read() throws IOException {
-        return warped.read();
+        return wrapped.read();
     }
 }

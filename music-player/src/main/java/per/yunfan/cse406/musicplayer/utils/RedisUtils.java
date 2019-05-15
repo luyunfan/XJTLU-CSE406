@@ -80,14 +80,14 @@ public final class RedisUtils {
      * @param key Key
      * @return value
      */
-    public static <K> Optional<String> get(K key) {
+    public static <K> Nullable<String> get(K key) {
         Jedis jedis = JEDIS.getResource();
         String value = jedis.get(String.valueOf(key));
         jedis.close();
         if (value == null || value.isEmpty()) {
-            return Optional.empty();
+            return Nullable.empty();
         } else {
-            return Optional.of(value);
+            return Nullable.of(value);
         }
     }
 

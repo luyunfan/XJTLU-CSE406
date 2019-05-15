@@ -4,7 +4,7 @@ import per.yunfan.cse406.musicplayer.dao.user.UserDAOImpl;
 import per.yunfan.cse406.musicplayer.enums.UserStates;
 import per.yunfan.cse406.musicplayer.model.po.User;
 import per.yunfan.cse406.musicplayer.model.vo.UserInfoVO;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ public interface UserDAO {
      * @return if login success, return an User object
      * @throws SQLException SQL query exception
      */
-    Optional<User> login(String userName, String password) throws SQLException;
+    Nullable<User> login(String userName, String password) throws SQLException;
 
     /**
      * Sign in a new user
@@ -59,5 +59,5 @@ public interface UserDAO {
      * @return User's information if this user is exist
      * @throws SQLException SQL query exception
      */
-    Optional<UserInfoVO> getUserInfoByName(String userName) throws SQLException;
+    Nullable<UserInfoVO> getUserInfoByName(String userName) throws SQLException;
 }

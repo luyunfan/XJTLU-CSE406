@@ -4,6 +4,9 @@ import per.yunfan.cse406.musicplayer.model.vo.traits.WithErrorInfo;
 import per.yunfan.cse406.musicplayer.model.vo.traits.WithToken;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
 
+/**
+ * Additional userVO information Java bean class
+ */
 public class UserInfoVO implements WithToken<UserInfoVO>, WithErrorInfo<UserInfoVO> {
 
     /**
@@ -40,32 +43,36 @@ public class UserInfoVO implements WithToken<UserInfoVO>, WithErrorInfo<UserInfo
         return states;
     }
 
-    public void setStates(String states) {
+    public UserInfoVO setStates(String states) {
         this.states = states;
+        return this;
     }
 
     public char getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public UserInfoVO setGender(char gender) {
         this.gender = gender;
+        return this;
     }
 
     public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public UserInfoVO setBirthday(String birthday) {
         this.birthday = birthday;
+        return this;
     }
 
     public String getIntroduction() {
         return introduction;
     }
 
-    public void setIntroduction(String introduction) {
+    public UserInfoVO setIntroduction(String introduction) {
         this.introduction = introduction;
+        return this;
     }
 
     /**

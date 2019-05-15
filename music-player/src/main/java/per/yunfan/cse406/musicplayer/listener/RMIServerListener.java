@@ -10,6 +10,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.rmi.RemoteException;
 
+/**
+ * When Server starting, this listener callback will start the RMI server
+ */
 @WebListener()
 public class RMIServerListener implements ServletContextListener {
 

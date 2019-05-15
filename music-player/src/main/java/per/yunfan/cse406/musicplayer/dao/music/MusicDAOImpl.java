@@ -6,7 +6,7 @@ import per.yunfan.cse406.musicplayer.dao.MusicDAO;
 import per.yunfan.cse406.musicplayer.model.po.Comment;
 import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.utils.JDBCUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -86,7 +86,7 @@ public enum MusicDAOImpl implements MusicDAO {
      * @throws SQLException SQL query exception
      */
     @Override
-    public Optional<Music> getMusicById(int id) throws SQLException {
+    public Nullable<Music> getMusicById(int id) throws SQLException {
         final String sql = "SELECT name, path FROM music WHERE id = ?;";
         Connection connection = JDBCUtils.getConnection();
         ResultSet resultSet = JDBCUtils.executeQuery(connection, sql, id);
@@ -98,9 +98,9 @@ public enum MusicDAOImpl implements MusicDAO {
             result.setComments(CommentDAO.getInstance()
                     .getCommentByMusic(result)
             );
-            return Optional.of(result);
+            return Nullable.of(result);
         }
-        return Optional.empty();
+        return Nullable.empty();
     }
 
     /**

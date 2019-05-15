@@ -7,7 +7,7 @@ import per.yunfan.cse406.musicplayer.model.po.Music;
 import per.yunfan.cse406.musicplayer.model.vo.CommentVO;
 import per.yunfan.cse406.musicplayer.service.MusicService;
 import per.yunfan.cse406.musicplayer.utils.JSONUtils;
-import per.yunfan.cse406.musicplayer.utils.Optional;
+import per.yunfan.cse406.musicplayer.utils.Nullable;
 import per.yunfan.cse406.musicplayer.utils.RedisUtils;
 
 import javax.servlet.ServletException;
@@ -95,13 +95,13 @@ public class AddCommentServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
+        Nullable<CommentVO> commentVO = JSONUtils.getJSONObjectByRequest(req, CommentVO.class);
         if (!commentVO.isPresent()) {
             JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
             return;
         }
         CommentVO comment = commentVO.get();
-        Optional<String> idAndUserName = RedisUtils.get(comment.getToken());
+        Nullable<String> idAndUserName = RedisUtils.get(comment.getToken());
         if (!idAndUserName.isPresent()) {
             JSONUtils.writeJSONToResponse(resp, JSONUtils.FAILURE_JSON);
             return;
