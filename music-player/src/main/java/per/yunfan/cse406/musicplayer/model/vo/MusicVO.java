@@ -101,4 +101,18 @@ public class MusicVO implements Serializable {
         this.states = states;
         return this;
     }
+
+    /**
+     * Music VO toString menthod
+     *
+     * @return All musicVO fields information
+     */
+    @Override
+    public String toString() {
+        return "MusicVO{" +
+                "name='" + name + '\'' +
+                ", playId='" + playId + '\'' +
+                ", states='" + states + '\'' +
+                '}';
+    }
 }

@@ -54,7 +54,7 @@ public class CommentDAO {
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String username = resultSet.getString("username");
-            String content = resultSet.getString("username");
+            String content = resultSet.getString("content");
             Timestamp date = resultSet.getTimestamp("date");
 
             Instant instant = date.toInstant();
