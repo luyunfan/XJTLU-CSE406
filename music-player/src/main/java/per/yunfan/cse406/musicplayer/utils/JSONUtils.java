@@ -39,12 +39,12 @@ public final class JSONUtils {
     /**
      * Failure JSON String
      */
-    public static String FAILURE_JSON = "{\"states\": \"" + FAILURE + "\"' }";
+    public static String FAILURE_JSON = "{\"states\": \"" + FAILURE + "\" }";
 
     /**
      * Success JSON String
      */
-    public static String SUCCESS_JSON = "{\"states\": \"" + SUCCESS + "\"' }";
+    public static String SUCCESS_JSON = "{\"states\": \"" + SUCCESS + "\" }";
 
     /**
      * Utility class can't create instance

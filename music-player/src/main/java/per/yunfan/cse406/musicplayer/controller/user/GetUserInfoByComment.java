@@ -102,6 +102,7 @@ public class GetUserInfoByComment extends HttpServlet {
             String username = comment.getUsername();
             Nullable<UserInfoVO> result = userService.getUserInfoByName(username);
             if (result.isPresent()) {
+                result.get().setStates(JSONUtils.SUCCESS);
                 JSONUtils.writeJSONToResponse(
                         resp,
                         JSONUtils.serializeJSON(result.get())
